@@ -1,0 +1,46 @@
+<!-- @dsCard group="Foundations" -->
+<title>Ink · Colour</title>
+<style>
+  :root {
+    --ground:#ffffff; --raised:#faf9f7; --sunken:#f4f2ef;
+    --ink:#111110; --muted:#6a6862; --faint:#9c9a94;
+    --line:#e5e3df; --line-strong:#c9c6c0;
+    --accent:#2f4f43; --accent-soft:#eef2f0;
+    --warn-bg:#fdf8ec; --warn-line:#e8dcb8; --warn-ink:#6d5a1f;
+    --sans:'Helvetica Neue',-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;
+    --t-micro:10.5px; --t-small:12.5px; --t-body:14px; --t-lead:17px; --t-display:30px;
+    --radius:2px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+       font-size:var(--t-body);line-height:1.5;-webkit-font-smoothing:antialiased;padding:28px}
+  .u-label{font-size:var(--t-micro);letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .u-num{font-variant-numeric:tabular-nums}
+  .spec{margin:0 0 22px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+  .spec h1{font-size:var(--t-lead);font-weight:500;margin:0 0 5px}
+  .spec p{margin:0;color:var(--muted);font-size:var(--t-small);max-width:64ch}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+  .stack{display:flex;flex-direction:column;gap:22px}
+  .cap{font-size:var(--t-micro);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:9px}
+  button{font-family:inherit;font-size:var(--t-body);color:inherit;cursor:pointer}
+
+    .sw{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:14px}
+    .s{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+    .s .chipc{height:76px}
+    .s .m{padding:9px 11px;font-size:var(--t-small)}
+    .s .m b{display:block;font-weight:600}
+    .s .m code{color:var(--faint);font-size:11px}
+  </style>
+<div class="spec"><h1>Colour</h1><p>Neutrals carry a faint warm bias so they read as chosen rather than inherited. One accent, spent only on the personalisation layer — the annotations no retailer grid has. Light-only by decision: garment photography is shot on white and a dark ground fights every image.</p></div>
+<div class="sw">
+<div class="s"><div class="chipc" style="background:#ffffff"></div><div class="m"><b>ground</b><code>#ffffff</code><div style="color:var(--muted);margin-top:3px">page</div></div></div>
+<div class="s"><div class="chipc" style="background:#faf9f7"></div><div class="m"><b>raised</b><code>#faf9f7</code><div style="color:var(--muted);margin-top:3px">search zone</div></div></div>
+<div class="s"><div class="chipc" style="background:#f4f2ef"></div><div class="m"><b>sunken</b><code>#f4f2ef</code><div style="color:var(--muted);margin-top:3px">image placeholder</div></div></div>
+<div class="s"><div class="chipc" style="background:#111110"></div><div class="m"><b>ink</b><code>#111110</code><div style="color:var(--muted);margin-top:3px">text, primary button</div></div></div>
+<div class="s"><div class="chipc" style="background:#6a6862"></div><div class="m"><b>muted</b><code>#6a6862</code><div style="color:var(--muted);margin-top:3px">secondary text</div></div></div>
+<div class="s"><div class="chipc" style="background:#9c9a94"></div><div class="m"><b>faint</b><code>#9c9a94</code><div style="color:var(--muted);margin-top:3px">labels, attributes</div></div></div>
+<div class="s"><div class="chipc" style="background:#e5e3df"></div><div class="m"><b>line</b><code>#e5e3df</code><div style="color:var(--muted);margin-top:3px">dividers</div></div></div>
+<div class="s"><div class="chipc" style="background:#c9c6c0"></div><div class="m"><b>line-strong</b><code>#c9c6c0</code><div style="color:var(--muted);margin-top:3px">inputs, chips</div></div></div>
+<div class="s"><div class="chipc" style="background:#2f4f43"></div><div class="m"><b>accent</b><code>#2f4f43</code><div style="color:var(--muted);margin-top:3px">fit annotation only</div></div></div>
+<div class="s"><div class="chipc" style="background:#eef2f0"></div><div class="m"><b>accent-soft</b><code>#eef2f0</code><div style="color:var(--muted);margin-top:3px">standing rationale</div></div></div>
+</div>

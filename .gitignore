@@ -1,0 +1,8 @@
+node_modules
+dist
+.env
+
+# Scraped catalog data and the content-addressed product image store.
+# This is ~348 MB per scrape run and regenerable via `pnpm refresh`.
+output/
+.gstack/

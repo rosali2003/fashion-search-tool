@@ -1,0 +1,51 @@
+<!-- @dsCard group="Controls" -->
+<title>Ink · Buttons</title>
+<style>
+  :root {
+    --ground:#ffffff; --raised:#faf9f7; --sunken:#f4f2ef;
+    --ink:#111110; --muted:#6a6862; --faint:#9c9a94;
+    --line:#e5e3df; --line-strong:#c9c6c0;
+    --accent:#2f4f43; --accent-soft:#eef2f0;
+    --warn-bg:#fdf8ec; --warn-line:#e8dcb8; --warn-ink:#6d5a1f;
+    --sans:'Helvetica Neue',-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;
+    --t-micro:10.5px; --t-small:12.5px; --t-body:14px; --t-lead:17px; --t-display:30px;
+    --radius:2px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+       font-size:var(--t-body);line-height:1.5;-webkit-font-smoothing:antialiased;padding:28px}
+  .u-label{font-size:var(--t-micro);letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .u-num{font-variant-numeric:tabular-nums}
+  .spec{margin:0 0 22px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+  .spec h1{font-size:var(--t-lead);font-weight:500;margin:0 0 5px}
+  .spec p{margin:0;color:var(--muted);font-size:var(--t-small);max-width:64ch}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+  .stack{display:flex;flex-direction:column;gap:22px}
+  .cap{font-size:var(--t-micro);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:9px}
+  button{font-family:inherit;font-size:var(--t-body);color:inherit;cursor:pointer}
+
+  .btn{border:1px solid var(--ink);background:var(--ground);color:var(--ink);padding:12px 22px;
+       border-radius:var(--radius);font-size:var(--t-small);letter-spacing:.09em;text-transform:uppercase;
+       transition:background .15s,color .15s,border-color .15s,opacity .15s}
+  .btn:hover:not(:disabled){background:var(--sunken)}
+  .btn:disabled{opacity:.35;cursor:not-allowed}
+  .btn--primary{background:var(--ink);color:var(--ground)}
+  .btn--quiet{border-color:transparent;background:none;color:var(--muted);padding:12px 14px}
+  .btn--link{border:0;background:none;padding:0;font-size:var(--t-small);color:var(--muted);
+             text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line-strong)}
+</style>
+<div class="spec"><h1>Buttons</h1><p>Three weights, deliberately. Primary commits, default is a peer action, quiet recedes into the masthead. The link form exists so "Find similar" never competes with the outbound link to the brand, which is the card's real call to action.</p></div>
+
+    <div class="cap">Primary · default · quiet · link</div>
+    <div class="row">
+      <button class="btn btn--primary">Search</button>
+      <button class="btn">Search all brands</button>
+      <button class="btn btn--quiet">Edit profile</button>
+      <button class="btn btn--link">Find similar</button>
+    </div>
+    <div class="cap">Disabled</div>
+    <div class="row">
+      <button class="btn btn--primary" disabled>Searching…</button>
+      <button class="btn" disabled>Try again</button>
+    </div>
+  

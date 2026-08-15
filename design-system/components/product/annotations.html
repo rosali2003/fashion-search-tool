@@ -1,0 +1,74 @@
+<!-- @dsCard group="Product" -->
+<title>Ink · Annotation layer</title>
+<style>
+  :root {
+    --ground:#ffffff; --raised:#faf9f7; --sunken:#f4f2ef;
+    --ink:#111110; --muted:#6a6862; --faint:#9c9a94;
+    --line:#e5e3df; --line-strong:#c9c6c0;
+    --accent:#2f4f43; --accent-soft:#eef2f0;
+    --warn-bg:#fdf8ec; --warn-line:#e8dcb8; --warn-ink:#6d5a1f;
+    --sans:'Helvetica Neue',-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;
+    --t-micro:10.5px; --t-small:12.5px; --t-body:14px; --t-lead:17px; --t-display:30px;
+    --radius:2px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+       font-size:var(--t-body);line-height:1.5;-webkit-font-smoothing:antialiased;padding:28px}
+  .u-label{font-size:var(--t-micro);letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .u-num{font-variant-numeric:tabular-nums}
+  .spec{margin:0 0 22px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+  .spec h1{font-size:var(--t-lead);font-weight:500;margin:0 0 5px}
+  .spec p{margin:0;color:var(--muted);font-size:var(--t-small);max-width:64ch}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+  .stack{display:flex;flex-direction:column;gap:22px}
+  .cap{font-size:var(--t-micro);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:9px}
+  button{font-family:inherit;font-size:var(--t-body);color:inherit;cursor:pointer}
+
+  .card{display:flex;flex-direction:column;height:100%;max-width:270px}
+  .card__link{display:flex;flex-direction:column;text-decoration:none;color:inherit}
+  .card__shot{aspect-ratio:3/4;background:var(--sunken);overflow:hidden;margin-bottom:13px}
+  .card__shot img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.2,.6,.2,1)}
+  .card__link:hover .card__shot img{transform:scale(1.035)}
+  .card__shot--empty{display:grid;place-items:center;color:var(--faint);font-size:var(--t-small)}
+  .card__brand{font-size:var(--t-micro);letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:5px}
+  .card__name{font-size:var(--t-body);line-height:1.35;margin:0 0 6px;font-weight:400}
+  .card__foot{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+  .card__price{font-size:var(--t-body);font-variant-numeric:tabular-nums}
+  .card__fiber{font-size:var(--t-small);color:var(--muted)}
+  .card__attrs{display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:9px;font-size:var(--t-micro);
+               letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+  .card__similar{align-self:flex-start;margin-top:auto;padding-top:11px}
+  .notes{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+  .note{font-size:var(--t-small);line-height:1.45;padding-left:10px;border-left:2px solid var(--line);color:var(--muted);margin:0}
+  .note--fit{border-left-color:var(--accent);color:var(--accent)}
+  .note--taste{border-left-color:var(--line-strong);color:var(--muted);font-style:italic}
+
+    .standing{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;padding:13px 16px;
+              border-left:2px solid var(--accent);background:var(--accent-soft);border-radius:0 var(--radius) var(--radius) 0}
+    .standing ul{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:4px 20px}
+    .standing li{font-size:var(--t-small);color:var(--accent);line-height:1.45}
+    .tailmark{display:flex;align-items:center;gap:14px;font-size:var(--t-micro);letter-spacing:.14em;
+              text-transform:uppercase;color:var(--faint);margin:26px 0 0}
+    .tailmark::after{content:'';flex:1;height:1px;background:var(--line)}
+  </style>
+<div class="spec"><h1>Annotation layer</h1><p>Measured problem: the styling rules describe categories, so on a 50-item page the same sentence landed on 38 of 50 cards and stopped being an explanation. A reason carried by a majority of the page is hoisted into a single standing block; below that it stays on the cards, where it genuinely distinguishes some products from others.</p></div>
+
+    <div class="cap">Standing rationale — hoisted when a reason covers most of the page</div>
+    <div class="standing">
+      <span class="u-label">Ranked for you</span>
+      <ul>
+        <li>high rise and an unbroken vertical line lengthen the leg line</li>
+        <li>traditional shirting details and a natural fibre, cut to last</li>
+      </ul>
+    </div>
+
+    <div class="cap" style="margin-top:30px">The three note kinds, on a card</div>
+    <div class="notes" style="max-width:330px">
+      <p class="note">95% cotton denim button-up with spread collar</p>
+      <p class="note note--fit">a lower waistline and a deeper neckline give a short torso more length</p>
+      <p class="note note--taste">pattern and applied detail doing the talking</p>
+    </div>
+
+    <div class="cap" style="margin-top:30px">Where curation stops</div>
+    <div class="tailmark">Beyond this point, ordered by keyword match only</div>
+  

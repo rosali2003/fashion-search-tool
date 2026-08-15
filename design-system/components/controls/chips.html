@@ -1,0 +1,48 @@
+<!-- @dsCard group="Controls" -->
+<title>Ink · Chips</title>
+<style>
+  :root {
+    --ground:#ffffff; --raised:#faf9f7; --sunken:#f4f2ef;
+    --ink:#111110; --muted:#6a6862; --faint:#9c9a94;
+    --line:#e5e3df; --line-strong:#c9c6c0;
+    --accent:#2f4f43; --accent-soft:#eef2f0;
+    --warn-bg:#fdf8ec; --warn-line:#e8dcb8; --warn-ink:#6d5a1f;
+    --sans:'Helvetica Neue',-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;
+    --t-micro:10.5px; --t-small:12.5px; --t-body:14px; --t-lead:17px; --t-display:30px;
+    --radius:2px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+       font-size:var(--t-body);line-height:1.5;-webkit-font-smoothing:antialiased;padding:28px}
+  .u-label{font-size:var(--t-micro);letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .u-num{font-variant-numeric:tabular-nums}
+  .spec{margin:0 0 22px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+  .spec h1{font-size:var(--t-lead);font-weight:500;margin:0 0 5px}
+  .spec p{margin:0;color:var(--muted);font-size:var(--t-small);max-width:64ch}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+  .stack{display:flex;flex-direction:column;gap:22px}
+  .cap{font-size:var(--t-micro);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:9px}
+  button{font-family:inherit;font-size:var(--t-body);color:inherit;cursor:pointer}
+
+  .chip{border:1px solid var(--line-strong);background:var(--ground);color:var(--muted);border-radius:999px;
+        padding:7px 14px;font-size:var(--t-small);transition:border-color .15s,color .15s,background .15s}
+  .chip:hover{border-color:var(--ink);color:var(--ink)}
+  .chip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--ground)}
+</style>
+<div class="spec"><h1>Chips</h1><p>One control for every multi-select in the product: brand filters, materials, body answers, example queries. Selected state inverts to solid ink rather than tinting, so a filtered state is unmistakable at a glance across a long filter bar.</p></div>
+
+    <div class="cap">Brand filter — two active</div>
+    <div class="row">
+      <span class="u-label">Brands</span>
+      <button class="chip" aria-pressed="true">aritzia</button>
+      <button class="chip" aria-pressed="true">gap</button>
+      <button class="chip">rihoas</button>
+      <button class="chip">uniqlo</button>
+    </div>
+    <div class="cap">Example queries — idle state</div>
+    <div class="row">
+      <button class="chip">cotton tie-back shirt, high collar, one tie</button>
+      <button class="chip">100% linen shirt</button>
+      <button class="chip">wool overcoat</button>
+    </div>
+  

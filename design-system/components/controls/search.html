@@ -1,0 +1,60 @@
+<!-- @dsCard group="Controls" -->
+<title>Ink · Search bar</title>
+<style>
+  :root {
+    --ground:#ffffff; --raised:#faf9f7; --sunken:#f4f2ef;
+    --ink:#111110; --muted:#6a6862; --faint:#9c9a94;
+    --line:#e5e3df; --line-strong:#c9c6c0;
+    --accent:#2f4f43; --accent-soft:#eef2f0;
+    --warn-bg:#fdf8ec; --warn-line:#e8dcb8; --warn-ink:#6d5a1f;
+    --sans:'Helvetica Neue',-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;
+    --t-micro:10.5px; --t-small:12.5px; --t-body:14px; --t-lead:17px; --t-display:30px;
+    --radius:2px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+       font-size:var(--t-body);line-height:1.5;-webkit-font-smoothing:antialiased;padding:28px}
+  .u-label{font-size:var(--t-micro);letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .u-num{font-variant-numeric:tabular-nums}
+  .spec{margin:0 0 22px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+  .spec h1{font-size:var(--t-lead);font-weight:500;margin:0 0 5px}
+  .spec p{margin:0;color:var(--muted);font-size:var(--t-small);max-width:64ch}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+  .stack{display:flex;flex-direction:column;gap:22px}
+  .cap{font-size:var(--t-micro);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:9px}
+  button{font-family:inherit;font-size:var(--t-body);color:inherit;cursor:pointer}
+
+  .btn{border:1px solid var(--ink);background:var(--ground);color:var(--ink);padding:12px 22px;
+       border-radius:var(--radius);font-size:var(--t-small);letter-spacing:.09em;text-transform:uppercase;
+       transition:background .15s,color .15s,border-color .15s,opacity .15s}
+  .btn:hover:not(:disabled){background:var(--sunken)}
+  .btn:disabled{opacity:.35;cursor:not-allowed}
+  .btn--primary{background:var(--ink);color:var(--ground)}
+  .btn--quiet{border-color:transparent;background:none;color:var(--muted);padding:12px 14px}
+  .btn--link{border:0;background:none;padding:0;font-size:var(--t-small);color:var(--muted);
+             text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line-strong)}
+
+  .chip{border:1px solid var(--line-strong);background:var(--ground);color:var(--muted);border-radius:999px;
+        padding:7px 14px;font-size:var(--t-small);transition:border-color .15s,color .15s,background .15s}
+  .chip:hover{border-color:var(--ink);color:var(--ink)}
+  .chip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--ground)}
+
+    .zone{background:var(--raised);border:1px solid var(--line);border-radius:var(--radius);padding:34px 28px}
+    .f{display:flex;gap:10px;max-width:800px;margin:0 auto}
+    .f input{flex:1;font-family:inherit;font-size:var(--t-lead);color:var(--ink);background:var(--ground);
+             border:1px solid var(--line-strong);border-radius:var(--radius);padding:15px 18px;min-width:0}
+    .f input::placeholder{color:var(--faint)}
+    .f input:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(17,17,16,.06)}
+    .ex{display:flex;flex-wrap:wrap;gap:7px;align-items:baseline;margin:16px auto 0;max-width:800px}
+  </style>
+<div class="spec"><h1>Search bar</h1><p>The primary surface for a returning shopper. Plain-language input, no operators, no dropdown — the whole premise is describing a garment the way you would to a person.</p></div>
+<div class="zone">
+    <form class="f" onsubmit="return false">
+      <input value="cotton button shirt with a collar" aria-label="Describe what you're looking for">
+      <button class="btn btn--primary" type="submit">Search</button>
+    </form>
+    <div class="ex"><span class="u-label">Try</span>
+      <button class="chip">black square neck sleeveless midi dress</button>
+      <button class="chip">something cozy for the weekend</button>
+    </div>
+  </div>

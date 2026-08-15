@@ -1,0 +1,54 @@
+<!-- @dsCard group="Onboarding" -->
+<title>Ink · Picture tiles</title>
+<style>
+  :root {
+    --ground:#ffffff; --raised:#faf9f7; --sunken:#f4f2ef;
+    --ink:#111110; --muted:#6a6862; --faint:#9c9a94;
+    --line:#e5e3df; --line-strong:#c9c6c0;
+    --accent:#2f4f43; --accent-soft:#eef2f0;
+    --warn-bg:#fdf8ec; --warn-line:#e8dcb8; --warn-ink:#6d5a1f;
+    --sans:'Helvetica Neue',-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;
+    --t-micro:10.5px; --t-small:12.5px; --t-body:14px; --t-lead:17px; --t-display:30px;
+    --radius:2px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+       font-size:var(--t-body);line-height:1.5;-webkit-font-smoothing:antialiased;padding:28px}
+  .u-label{font-size:var(--t-micro);letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .u-num{font-variant-numeric:tabular-nums}
+  .spec{margin:0 0 22px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+  .spec h1{font-size:var(--t-lead);font-weight:500;margin:0 0 5px}
+  .spec p{margin:0;color:var(--muted);font-size:var(--t-small);max-width:64ch}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+  .stack{display:flex;flex-direction:column;gap:22px}
+  .cap{font-size:var(--t-micro);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:9px}
+  button{font-family:inherit;font-size:var(--t-body);color:inherit;cursor:pointer}
+
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:720px}
+  .tile{border:1px solid var(--line-strong);background:var(--ground);border-radius:var(--radius);
+        padding:0;overflow:hidden;text-align:left;transition:border-color .15s,box-shadow .15s}
+  .tile:hover{border-color:var(--muted)}
+  .tile[aria-pressed=true]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+  .tile__art{aspect-ratio:4/5;background:var(--sunken);display:grid;place-items:center}
+  .tile__art svg{width:100%;height:100%;display:block}
+  .tile__label{padding:11px 12px 13px;font-size:var(--t-small);text-transform:capitalize}
+  .tile[aria-pressed=true] .tile__label{font-weight:600}
+  .tile__label small{display:block;color:var(--faint);font-size:var(--t-micro);margin-top:3px;text-transform:none;letter-spacing:0}
+</style>
+<div class="spec"><h1>Picture tiles</h1><p>Q1 silhouette and Q5 aesthetic. Drawn rather than photographed on purpose: a real garment standing in for "relaxed" gets read as "I want that item", and the catalog rotates, so the exemplar would go out of stock and become a picture of nothing. The four silhouettes share a neckline and hem height so the only thing varying between tiles is the thing being asked about.</p></div>
+
+    <div class="cap">Q1 · silhouette — multi-select, "fitted" active</div>
+    <div class="tiles">
+      <button class="tile"><span class="tile__art"><svg viewBox="0 0 80 100" aria-hidden="true"><path d="M34 20 L26 28 L27 57 L26 86 L54 86 L53 57 L54 28 L46 20 Z" fill="none" stroke="#111110" stroke-width="1.6" stroke-linejoin="round"/><path d="M34 20 Q40 25 46 20" fill="none" stroke="#111110" stroke-width="1.6"/></svg></span><span class="tile__label">relaxed<small>skims, not clings</small></span></button>
+      <button class="tile"><span class="tile__art"><svg viewBox="0 0 80 100" aria-hidden="true"><path d="M33 20 L20 32 L21 58 L20 86 L60 86 L59 58 L60 32 L47 20 Z" fill="none" stroke="#111110" stroke-width="1.6" stroke-linejoin="round"/><path d="M33 20 Q40 25 47 20" fill="none" stroke="#111110" stroke-width="1.6"/><path d="M20 32 L27 34 M60 32 L53 34" stroke="#c9c6c0" stroke-width="1.2"/></svg></span><span class="tile__label">oversized<small>dropped shoulder, roomy</small></span></button>
+      <button class="tile" aria-pressed="true"><span class="tile__art"><svg viewBox="0 0 80 100" aria-hidden="true"><path d="M34 20 L28 27 L30 56 L31 86 L49 86 L50 56 L52 27 L46 20 Z" fill="none" stroke="#111110" stroke-width="1.6" stroke-linejoin="round"/><path d="M34 20 Q40 25 46 20" fill="none" stroke="#111110" stroke-width="1.6"/><path d="M30 56 Q40 59 50 56" fill="none" stroke="#c9c6c0" stroke-width="1.2"/></svg></span><span class="tile__label">fitted<small>follows the body</small></span></button>
+      <button class="tile"><span class="tile__art"><svg viewBox="0 0 80 100" aria-hidden="true"><path d="M33 20 L26 24 L27 30 L30 55 L22 86 L58 86 L50 55 L53 30 L54 24 L47 20 Z" fill="none" stroke="#111110" stroke-width="1.6" stroke-linejoin="round"/><path d="M33 20 Q40 25 47 20" fill="none" stroke="#111110" stroke-width="1.6"/><path d="M26 24 L54 24" stroke="#c9c6c0" stroke-width="1.2"/></svg></span><span class="tile__label">structured<small>holds its own shape</small></span></button>
+    </div>
+    <div class="cap" style="margin-top:34px">Q5 · aesthetic — single-select, "classic" active</div>
+    <div class="tiles">
+      <button class="tile"><span class="tile__art"><svg viewBox="0 0 80 100" aria-hidden="true"><rect x="22" y="22" width="36" height="56" fill="#111110" opacity=".9"/></svg></span><span class="tile__label">minimal<small>solids, no ornament</small></span></button>
+      <button class="tile" aria-pressed="true"><span class="tile__art"><svg viewBox="0 0 80 100" aria-hidden="true"><rect x="22" y="22" width="36" height="56" fill="none" stroke="#111110" stroke-width="1.4"/><line x1="22" y1="30" x2="58" y2="30" stroke="#111110" stroke-width="1.4" opacity=".75"/><line x1="22" y1="38" x2="58" y2="38" stroke="#111110" stroke-width="1.4" opacity=".75"/><line x1="22" y1="46" x2="58" y2="46" stroke="#111110" stroke-width="1.4" opacity=".75"/><line x1="22" y1="54" x2="58" y2="54" stroke="#111110" stroke-width="1.4" opacity=".75"/><line x1="22" y1="62" x2="58" y2="62" stroke="#111110" stroke-width="1.4" opacity=".75"/><line x1="22" y1="70" x2="58" y2="70" stroke="#111110" stroke-width="1.4" opacity=".75"/><line x1="40" y1="22" x2="40" y2="78" stroke="#faf9f7" stroke-width="4"/><line x1="40" y1="22" x2="40" y2="78" stroke="#111110" stroke-width="1.2"/><circle cx="40" cy="30" r="1.5" fill="#111110"/><circle cx="40" cy="44" r="1.5" fill="#111110"/><circle cx="40" cy="58" r="1.5" fill="#111110"/><circle cx="40" cy="72" r="1.5" fill="#111110"/></svg></span><span class="tile__label">classic<small>shirting, natural fibre</small></span></button>
+      <button class="tile"><span class="tile__art"><svg viewBox="0 0 80 100" aria-hidden="true"><rect x="22" y="22" width="36" height="56" fill="none" stroke="#111110" stroke-width="1.4"/><path d="M27 22 Q29 50 27 78" fill="none" stroke="#111110" stroke-width="1.2" opacity=".55"/><path d="M32 22 Q34 50 32 78" fill="none" stroke="#111110" stroke-width="1.2" opacity=".55"/><path d="M37 22 Q39 50 37 78" fill="none" stroke="#111110" stroke-width="1.2" opacity=".55"/><path d="M42 22 Q44 50 42 78" fill="none" stroke="#111110" stroke-width="1.2" opacity=".55"/><path d="M47 22 Q49 50 47 78" fill="none" stroke="#111110" stroke-width="1.2" opacity=".55"/><path d="M52 22 Q54 50 52 78" fill="none" stroke="#111110" stroke-width="1.2" opacity=".55"/></svg></span><span class="tile__label">casual<small>easy, everyday cotton</small></span></button>
+      <button class="tile"><span class="tile__art"><svg viewBox="0 0 80 100" aria-hidden="true"><rect x="22" y="22" width="18" height="28" fill="#111110" opacity=".9"/><rect x="40" y="22" width="18" height="28" fill="none" stroke="#111110" stroke-width="1.3"/><line x1="40" y1="26" x2="58" y2="26" stroke="#111110" stroke-width="1.3"/><line x1="40" y1="32" x2="58" y2="32" stroke="#111110" stroke-width="1.3"/><line x1="40" y1="38" x2="58" y2="38" stroke="#111110" stroke-width="1.3"/><line x1="40" y1="44" x2="58" y2="44" stroke="#111110" stroke-width="1.3"/><circle cx="31" cy="64" r="9" fill="none" stroke="#111110" stroke-width="1.3"/><circle cx="31" cy="64" r="3.5" fill="#111110"/><path d="M40 78 L49 50 L58 78 Z" fill="none" stroke="#111110" stroke-width="1.3" stroke-linejoin="round"/></svg></span><span class="tile__label">eclectic<small>pattern and detail</small></span></button>
+    </div>
+  

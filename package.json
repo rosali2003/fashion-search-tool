@@ -1,0 +1,35 @@
+{
+  "name": "ink",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:backend": "pnpm --filter backend dev",
+    "dev:frontend": "pnpm --filter frontend dev",
+    "scrape:aritzia": "pnpm --filter scrapers scrape:aritzia",
+    "scrape:gap": "pnpm --filter scrapers scrape:gap",
+    "scrape:uniqlo": "pnpm --filter scrapers scrape:uniqlo",
+    "scrape:rihoas": "pnpm --filter scrapers scrape:rihoas",
+    "scrape:all": "pnpm --filter scrapers scrape:all",
+    "refresh": "tsx scripts/refresh.ts",
+    "test": "pnpm --filter backend test && pnpm --filter scrapers test",
+    "eval": "pnpm --filter backend eval",
+    "ingest": "pnpm --filter backend ingest",
+    "enrich": "pnpm --filter backend enrich",
+    "migrate": "pnpm --filter backend migrate"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "b",
+      "d",
+      "e",
+      "esbuild",
+      "i",
+      "l",
+      "s",
+      "u"
+    ]
+  },
+  "devDependencies": {
+    "tsx": "^4.23.11"
+  }
+}

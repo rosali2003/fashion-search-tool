@@ -1,0 +1,6 @@
+packages:
+  - frontend
+  - backend
+  - scrapers
+
+allowBuild: esbuild

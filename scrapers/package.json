@@ -1,0 +1,22 @@
+{
+  "name": "scrapers",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "scrape:aritzia": "tsx src/aritzia.ts",
+    "scrape:gap": "tsx src/gap.ts",
+    "scrape:uniqlo": "tsx src/uniqlo.ts",
+    "scrape:rihoas": "tsx src/rihoas.ts",
+    "scrape:all": "tsx src/run.ts",
+    "test": "node --import tsx --test \"src/**/*.test.ts\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "playwright": "^1.49.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

@@ -1,0 +1,36 @@
+<!-- @dsCard group="States" -->
+<title>Ink · Loading grid</title>
+<style>
+  :root {
+    --ground:#ffffff; --raised:#faf9f7; --sunken:#f4f2ef;
+    --ink:#111110; --muted:#6a6862; --faint:#9c9a94;
+    --line:#e5e3df; --line-strong:#c9c6c0;
+    --accent:#2f4f43; --accent-soft:#eef2f0;
+    --warn-bg:#fdf8ec; --warn-line:#e8dcb8; --warn-ink:#6d5a1f;
+    --sans:'Helvetica Neue',-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;
+    --t-micro:10.5px; --t-small:12.5px; --t-body:14px; --t-lead:17px; --t-display:30px;
+    --radius:2px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+       font-size:var(--t-body);line-height:1.5;-webkit-font-smoothing:antialiased;padding:28px}
+  .u-label{font-size:var(--t-micro);letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .u-num{font-variant-numeric:tabular-nums}
+  .spec{margin:0 0 22px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+  .spec h1{font-size:var(--t-lead);font-weight:500;margin:0 0 5px}
+  .spec p{margin:0;color:var(--muted);font-size:var(--t-small);max-width:64ch}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+  .stack{display:flex;flex-direction:column;gap:22px}
+  .cap{font-size:var(--t-micro);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:9px}
+  button{font-family:inherit;font-size:var(--t-body);color:inherit;cursor:pointer}
+
+    .grid{display:grid;grid-template-columns:repeat(4,1fr);column-gap:24px;row-gap:44px}
+    .sk-img{aspect-ratio:3/4;background:linear-gradient(100deg,var(--sunken) 30%,#ebe8e3 50%,var(--sunken) 70%);
+            background-size:200% 100%;animation:sh 1.4s infinite linear;margin-bottom:13px}
+    .sk-line{height:9px;border-radius:2px;background:var(--sunken);margin-bottom:7px}
+    .sk-line.short{width:45%}
+    @keyframes sh{from{background-position:200% 0}to{background-position:-200% 0}}
+    @media (prefers-reduced-motion:reduce){.sk-img{animation:none}}
+  </style>
+<div class="spec"><h1>Loading grid</h1><p>Skeletons at the real 3:4 ratio so nothing shifts when results land. Twelve rather than ten: the grid is four columns, and a count that is not a multiple of the column count leaves a ragged final row that reads as a partly failed load.</p></div>
+<div class="grid" aria-busy="true"><div><div class="sk-img"></div><div class="sk-line"></div><div class="sk-line short"></div></div><div><div class="sk-img"></div><div class="sk-line"></div><div class="sk-line short"></div></div><div><div class="sk-img"></div><div class="sk-line"></div><div class="sk-line short"></div></div><div><div class="sk-img"></div><div class="sk-line"></div><div class="sk-line short"></div></div><div><div class="sk-img"></div><div class="sk-line"></div><div class="sk-line short"></div></div><div><div class="sk-img"></div><div class="sk-line"></div><div class="sk-line short"></div></div><div><div class="sk-img"></div><div class="sk-line"></div><div class="sk-line short"></div></div><div><div class="sk-img"></div><div class="sk-line"></div><div class="sk-line short"></div></div></div>

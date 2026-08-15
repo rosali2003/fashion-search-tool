@@ -1,0 +1,46 @@
+<!-- @dsCard group="Profile" -->
+<title>Ink · Profile summary</title>
+<style>
+  :root {
+    --ground:#ffffff; --raised:#faf9f7; --sunken:#f4f2ef;
+    --ink:#111110; --muted:#6a6862; --faint:#9c9a94;
+    --line:#e5e3df; --line-strong:#c9c6c0;
+    --accent:#2f4f43; --accent-soft:#eef2f0;
+    --warn-bg:#fdf8ec; --warn-line:#e8dcb8; --warn-ink:#6d5a1f;
+    --sans:'Helvetica Neue',-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;
+    --t-micro:10.5px; --t-small:12.5px; --t-body:14px; --t-lead:17px; --t-display:30px;
+    --radius:2px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+       font-size:var(--t-body);line-height:1.5;-webkit-font-smoothing:antialiased;padding:28px}
+  .u-label{font-size:var(--t-micro);letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .u-num{font-variant-numeric:tabular-nums}
+  .spec{margin:0 0 22px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+  .spec h1{font-size:var(--t-lead);font-weight:500;margin:0 0 5px}
+  .spec p{margin:0;color:var(--muted);font-size:var(--t-small);max-width:64ch}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+  .stack{display:flex;flex-direction:column;gap:22px}
+  .cap{font-size:var(--t-micro);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:9px}
+  button{font-family:inherit;font-size:var(--t-body);color:inherit;cursor:pointer}
+
+    .panel{border:1px solid var(--line);border-radius:var(--radius);background:var(--ground);padding:22px 24px}
+    .profile{display:flex;align-items:center;gap:18px;flex-wrap:wrap;font-size:var(--t-small)}
+    .profile__row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0}
+    .profile__k{color:var(--faint)}
+    .bar{display:inline-flex;align-items:center;gap:7px;color:var(--muted)}
+    .bar__track{width:64px;height:4px;background:var(--sunken);border-radius:2px;overflow:hidden}
+    .bar__fill{height:100%;background:var(--accent)}
+  </style>
+<div class="spec"><h1>Profile summary</h1><p>A single quiet row, not a card: orientation rather than content, with the results grid immediately below being what the shopper came for. Brand affinities show as bars because that is the part of the profile that visibly moves with use — the feedback loop that makes the A/B comparisons feel worth doing. Only fibres the profile has actually moved on are listed; showing everything at the 0.5 neutral default would present it as learned.</p></div>
+<div class="panel"><div class="profile">
+    <span class="u-label">Your profile</span>
+    <span class="profile__row"><span class="profile__k">Taste</span><span>classic</span></span>
+    <span class="profile__row"><span class="profile__k">Fit</span><span>petite · wide shoulders · short torso · defined waist</span></span>
+    <span class="profile__row"><span class="profile__k">Fabric</span>
+      <span class="bar"><span class="bar__track"><span class="bar__fill" style="width:85%"></span></span>85% natural</span></span>
+    <span class="profile__row"><span class="profile__k">Brands</span>
+      <span class="bar">gap<span class="bar__track"><span class="bar__fill" style="width:70%"></span></span></span><span class="bar">aritzia<span class="bar__track"><span class="bar__fill" style="width:70%"></span></span></span><span class="bar">rihoas<span class="bar__track"><span class="bar__fill" style="width:50%"></span></span></span><span class="bar">uniqlo<span class="bar__track"><span class="bar__fill" style="width:50%"></span></span></span></span>
+    <span class="profile__row"><span class="profile__k">Learned</span><span>linen · cotton</span></span>
+    <span class="profile__row u-num"><span class="profile__k">Comparisons</span><span>4 of 20</span></span>
+  </div></div>

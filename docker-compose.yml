@@ -1,0 +1,36 @@
+# ParadeDB = Postgres + pg_search, which provides real BM25 ranking via Tantivy.
+#
+# The tag is pinned deliberately. pg_search's DDL has changed across releases —
+# `USING bm25` became `USING paradedb`, per-field tokenizer config moved to
+# `::pdb.*` casts, and `paradedb.score()` became `pdb.score()`. An unpinned tag
+# can silently break migration 004. Before bumping this, re-read
+# https://docs.paradedb.com/documentation/indexing/create-index and re-run
+# `pnpm --filter backend migrate`.
+#
+# Note also that pg_search is not available on managed Postgres (RDS, Neon,
+# Supabase), so deploying means ParadeDB Cloud or self-hosting this image.
+
+services:
+  postgres:
+    image: paradedb/paradedb:0.23.1-pg17
+    container_name: ink-postgres
+    restart: unless-stopped
+    # Host port 5433: a local Postgres already listens on 5432.
+    ports:
+      - '5433:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ink
+    volumes:
+      - ink-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      # `pnpm refresh` runs unattended from cron, so the container needs to
+      # report readiness rather than just "running".
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d ink']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  ink-pgdata:

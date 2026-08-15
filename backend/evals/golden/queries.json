@@ -1,0 +1,752 @@
+[
+  {
+    "id": "attr-black-square-midi",
+    "query": "black square neck sleeveless midi dress",
+    "slice": "attribute",
+    "judgments": [
+      {
+        "url": "https://www.rihoas.com/products/black-square-neck-sleeveless-button-midi-dress",
+        "grade": 3,
+        "name": "Black Square Neck Sleeveless Button Midi Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/green-square-neck-lace-slip-midi-dress",
+        "grade": 2,
+        "name": "Green Square Neck Lace Slip Midi Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/red-square-neck-lace-a-line-midi-dress",
+        "grade": 2,
+        "name": "Red Square Neck Lace A-Line Midi Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/black-sweetheart-neck-slit-ruffle-maxi-dress",
+        "grade": 1,
+        "name": "Black Sweetheart Neck Slit Ruffle Maxi Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/black-v-neck-sleeveless-contrasting-mini-dress",
+        "grade": 1,
+        "name": "Black V Neck Sleeveless Contrasting Mini Dress"
+      }
+    ],
+    "gate": {
+      "url": "https://www.rihoas.com/products/black-square-neck-sleeveless-button-midi-dress",
+      "k": 3
+    }
+  },
+  {
+    "id": "attr-sweetheart-floral-lace-mini",
+    "query": "sweetheart neckline floral lace mini dress",
+    "slice": "attribute",
+    "judgments": [
+      {
+        "url": "https://www.rihoas.com/products/apricot-sweetheart-neck-floral-lace-mini-dress",
+        "grade": 3,
+        "name": "Apricot Sweetheart Neck Floral Lace Mini Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/blue-v-neck-lace-splicing-floral-mini-dress",
+        "grade": 2,
+        "name": "Blue V Neck Lace Splicing Floral Mini Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/blue-sweetheart-neck-chiffon-mini-dress",
+        "grade": 2,
+        "name": "Blue Sweetheart Neck Chiffon Mini Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/off-white-v-neck-lace-floral-mini-dress",
+        "grade": 2,
+        "name": "Off White V Neck Lace Floral Mini Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/blue-sweetheart-neck-lace-maxi-dress",
+        "grade": 1,
+        "name": "Blue Sweetheart Neck Lace Maxi Dress"
+      }
+    ],
+    "gate": {
+      "url": "https://www.rihoas.com/products/apricot-sweetheart-neck-floral-lace-mini-dress",
+      "k": 3
+    }
+  },
+  {
+    "id": "attr-mandarin-collar-slit-maxi",
+    "query": "mandarin collar maxi dress with a slit",
+    "slice": "attribute",
+    "judgments": [
+      {
+        "url": "https://www.rihoas.com/products/purple-mandarin-collar-slit-satin-maxi-dress",
+        "grade": 3,
+        "name": "Purple Mandarin Collar Slit Satin Maxi Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/dresses-midi-dresses-new-in-new-in-dresses-contrasting-spring-summer",
+        "grade": 2,
+        "name": "Purple Mandarin Collar Slit Mermaid Midi Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/purple-mandarin-collar-single-breasted-vest",
+        "grade": 1,
+        "name": "Purple Mandarin Collar Single Breasted Vest"
+      },
+      {
+        "url": "https://www.rihoas.com/products/blue-boat-neck-slit-chiffon-maxi-dress",
+        "grade": 1,
+        "name": "Blue Boat Neck Slit Chiffon Maxi Dress"
+      }
+    ],
+    "gate": {
+      "url": "https://www.rihoas.com/products/purple-mandarin-collar-slit-satin-maxi-dress",
+      "k": 3
+    }
+  },
+  {
+    "id": "attr-cropped-scoop-cami",
+    "query": "cropped scoop neck cami",
+    "slice": "attribute",
+    "judgments": [
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=778093172",
+        "grade": 3,
+        "name": "Modern Crop Cami"
+      },
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=886598002",
+        "grade": 2,
+        "name": "Pointelle Shell Tank Top"
+      },
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=896816142",
+        "grade": 1,
+        "name": "Knit Oversized Crop T-Shirt"
+      }
+    ],
+    "gate": {
+      "url": "https://www.gap.com/browse/product.do?pid=778093172",
+      "k": 3
+    }
+  },
+  {
+    "id": "attr-high-rise-slim-crop-jeans",
+    "query": "high rise slim straight cropped jeans",
+    "slice": "attribute",
+    "judgments": [
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=789129002",
+        "grade": 3,
+        "name": "High Rise ’90s Slim Straight Crop Jeans"
+      },
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=886855002",
+        "grade": 2,
+        "name": "High Rise Cuffed '90s Slim Straight Jeans"
+      },
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=800532072",
+        "grade": 1,
+        "name": "365 High Rise Pleated Trousers"
+      }
+    ],
+    "gate": {
+      "url": "https://www.gap.com/browse/product.do?pid=789129002",
+      "k": 3
+    }
+  },
+  {
+    "id": "adjacent-leather-biker-jacket",
+    "query": "black leather biker jacket",
+    "slice": "attribute",
+    "note": "No leather outerwear exists. The denim jacket is the closest real garment.",
+    "judgments": [
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=894636002",
+        "grade": 1,
+        "name": "Denim Barn Jacket"
+      }
+    ]
+  },
+  {
+    "id": "mat-cashmere-sweater",
+    "query": "100% cashmere sweater",
+    "slice": "material",
+    "judgments": [
+      {
+        "url": "https://www.aritzia.com/us/en/product/bare-cashmere-opus-mockneck/134506.html",
+        "grade": 3,
+        "name": "Bare Cashmere Opus Mockneck"
+      },
+      {
+        "url": "https://www.aritzia.com/us/en/product/essential-cashmere-relic-sweater/121652.html",
+        "grade": 3,
+        "name": "Essential Cashmere Relic Sweater"
+      },
+      {
+        "url": "https://www.aritzia.com/us/en/product/bare-cashmere-noteworthy-shortsleeve-cardigan/128137.html",
+        "grade": 2,
+        "name": "Bare Cashmere Noteworthy Shortsleeve Cardigan"
+      },
+      {
+        "url": "https://www.aritzia.com/us/en/product/essential-cashmere-acclaim-cardigan/128107.html",
+        "grade": 2,
+        "name": "Essential Cashmere Acclaim Cardigan"
+      },
+      {
+        "url": "https://www.aritzia.com/us/en/product/peggy-sweater/133890.html",
+        "grade": 1,
+        "name": "Peggy Sweater"
+      }
+    ],
+    "gate": {
+      "url": "https://www.aritzia.com/us/en/product/bare-cashmere-opus-mockneck/134506.html",
+      "k": 5
+    }
+  },
+  {
+    "id": "mat-satin-midi-skirt",
+    "query": "satin midi skirt",
+    "slice": "material",
+    "judgments": [
+      {
+        "url": "https://www.aritzia.com/us/en/product/henrietta-satin-skirt/128560.html",
+        "grade": 3,
+        "name": "Henrietta Satin Skirt"
+      },
+      {
+        "url": "https://www.aritzia.com/us/en/product/rosehip-skirt/135275.html",
+        "grade": 2,
+        "name": "Rosehip Skirt"
+      },
+      {
+        "url": "https://www.aritzia.com/us/en/product/touchpoint-satin-short/136171.html",
+        "grade": 1,
+        "name": "Touchpoint Satin Short"
+      }
+    ],
+    "gate": {
+      "url": "https://www.aritzia.com/us/en/product/henrietta-satin-skirt/128560.html",
+      "k": 3
+    }
+  },
+  {
+    "id": "mat-cotton-gauze-pants",
+    "query": "cotton gauze barrel pants",
+    "slice": "material",
+    "judgments": [
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=877646042",
+        "grade": 3,
+        "name": "Cotton Gauze Easy Barrel Pants"
+      },
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=877638072",
+        "grade": 2,
+        "name": "Easy Double-Knee Barrel Pants"
+      },
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=908992032",
+        "grade": 2,
+        "name": "Mid Rise Twill Easy Barrel Utility Pants"
+      },
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=863840002",
+        "grade": 1,
+        "name": "Low Rise Barrel Jeans"
+      }
+    ],
+    "gate": {
+      "url": "https://www.gap.com/browse/product.do?pid=877646042",
+      "k": 3
+    }
+  },
+  {
+    "id": "mat-cotton-oversized-sweater",
+    "query": "100% cotton oversized sweater",
+    "slice": "material",
+    "judgments": [
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=820732252",
+        "grade": 3,
+        "name": "100% Cotton Oversized Sweater"
+      },
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=850110152",
+        "grade": 2,
+        "name": "100% Cotton Rollneck Sweater"
+      },
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=910970012",
+        "grade": 2,
+        "name": "Textured Cotton Oversized Half-Zip Pullover"
+      },
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=897009022",
+        "grade": 1,
+        "name": "100% Cotton Pocket Sweater Vest"
+      }
+    ],
+    "gate": {
+      "url": "https://www.gap.com/browse/product.do?pid=820732252",
+      "k": 3
+    }
+  },
+  {
+    "id": "mat-satin-camisole",
+    "query": "satin camisole",
+    "slice": "material",
+    "judgments": [
+      {
+        "url": "https://www.aritzia.com/us/en/product/serif-satin-camisole/132460.html",
+        "grade": 3,
+        "name": "Serif Satin Camisole"
+      },
+      {
+        "url": "https://www.aritzia.com/us/en/product/familiar-satin-camisole/135288.html",
+        "grade": 3,
+        "name": "Familiar Satin Camisole"
+      },
+      {
+        "url": "https://www.aritzia.com/us/en/product/nominee-satin-blouse/120661.html",
+        "grade": 1,
+        "name": "Nominee Satin Blouse"
+      },
+      {
+        "url": "https://www.aritzia.com/us/en/product/dover-satin-shirt/127273.html",
+        "grade": 1,
+        "name": "Dover Satin Shirt"
+      }
+    ],
+    "gate": {
+      "url": "https://www.aritzia.com/us/en/product/serif-satin-camisole/132460.html",
+      "k": 3
+    }
+  },
+  {
+    "id": "vague-cozy-weekend",
+    "query": "something cozy for the weekend",
+    "slice": "vague",
+    "note": "Relies on occasion=lounge/everyday synonyms; no lexical overlap otherwise.",
+    "judgments": [
+      {
+        "url": "https://www.aritzia.com/us/en/product/cozy-sweatfleece-mega-straight-sweatpant/116292.html",
+        "grade": 3,
+        "name": "Cozy Sweatfleece Mega Straight™ Sweatpant"
+      },
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=821270112",
+        "grade": 3,
+        "name": "Adult Heavyweight Oversized Hoodie"
+      },
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=1180111112",
+        "grade": 2,
+        "name": "VintageSoft Terry Oversized Wedge Zip Hoodie"
+      },
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=811981402",
+        "grade": 2,
+        "name": "SoftMade Modal PJ Pants"
+      },
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=844936012",
+        "grade": 2,
+        "name": "VintageSoft Terry Raglan Sweatshirt"
+      },
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=820732252",
+        "grade": 1,
+        "name": "100% Cotton Oversized Sweater"
+      }
+    ]
+  },
+  {
+    "id": "vague-beach-vacation-dress",
+    "query": "beach vacation dress",
+    "slice": "vague",
+    "judgments": [
+      {
+        "url": "https://www.rihoas.com/products/white-cut-out-tie-strap-beach-dress",
+        "grade": 3,
+        "name": "White Cut Out Tie Strap Beach Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/blue-striped-textured-beach-dress",
+        "grade": 3,
+        "name": "Blue Striped Textured Beach Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/blue-sleeveless-floral-chiffon-maxi-dress",
+        "grade": 1,
+        "name": "Blue Sleeveless Floral Chiffon Maxi Dress"
+      }
+    ],
+    "gate": {
+      "url": "https://www.rihoas.com/products/white-cut-out-tie-strap-beach-dress",
+      "k": 5
+    }
+  },
+  {
+    "id": "vague-flowy-summer-dress",
+    "query": "flowy summer dress",
+    "slice": "vague",
+    "judgments": [
+      {
+        "url": "https://www.rihoas.com/products/apricot-pleated-flowy-slip-midi-dress",
+        "grade": 3,
+        "name": "Apricot Pleated Flowy Slip Midi Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/red-jacquard-flowy-chiffon-mini-dress",
+        "grade": 3,
+        "name": "Red Jacquard Flowy Chiffon Mini Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/blue-sleeveless-floral-chiffon-maxi-dress",
+        "grade": 2,
+        "name": "Blue Sleeveless Floral Chiffon Maxi Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/pink-lace-button-slip-chiffon-maxi-dress",
+        "grade": 1,
+        "name": "Pink Lace Button Slip Chiffon Maxi Dress"
+      }
+    ]
+  },
+  {
+    "id": "vague-office-appropriate",
+    "query": "something smart to wear to the office",
+    "slice": "vague",
+    "note": "Deliberately hard. Tests that occasion=work surfaces at all.",
+    "judgments": [
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=800532072",
+        "grade": 2,
+        "name": "365 High Rise Pleated Trousers"
+      },
+      {
+        "url": "https://www.aritzia.com/us/en/product/somerset-pant/135302.html",
+        "grade": 2,
+        "name": "Somerset Pant"
+      },
+      {
+        "url": "https://www.aritzia.com/us/en/product/nominee-satin-blouse/120661.html",
+        "grade": 2,
+        "name": "Nominee Satin Blouse"
+      },
+      {
+        "url": "https://www.rihoas.com/products/purple-mandarin-collar-single-breasted-vest",
+        "grade": 2,
+        "name": "Purple Mandarin Collar Single Breasted Vest"
+      },
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=910044022",
+        "grade": 1,
+        "name": "Organic Cotton Poplin Big Shirt"
+      }
+    ]
+  },
+  {
+    "id": "vague-stretchy-tshirt",
+    "query": "stretchy fitted t-shirt",
+    "slice": "vague",
+    "note": "\"stretchy\" must reach elastane through the fibre synonym chain.",
+    "judgments": [
+      {
+        "url": "https://www.aritzia.com/us/en/product/homestretch%E2%84%A2-rib-location-t-shirt/133513.html",
+        "grade": 3,
+        "name": "HomeStretch™ Rib Location T-Shirt"
+      },
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=544347292",
+        "grade": 2,
+        "name": "CloseKnit Jersey T-Shirt"
+      },
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=886601002",
+        "grade": 2,
+        "name": "Modern Rib T-Shirt"
+      },
+      {
+        "url": "https://www.aritzia.com/us/en/product/interlock-cotton-major-t-shirt/133909.html",
+        "grade": 1,
+        "name": "InterLock Cotton Major T-Shirt"
+      }
+    ]
+  },
+  {
+    "id": "brand-uniqlo-heattech-high-neck",
+    "query": "heattech high neck long sleeve top",
+    "slice": "brand",
+    "brands": [
+      "uniqlo"
+    ],
+    "judgments": [
+      {
+        "url": "https://www.uniqlo.com/us/en/products/E480868-000.html",
+        "grade": 3,
+        "name": "HEATTECH Ultra Warm High Neck T-Shirt"
+      },
+      {
+        "url": "https://www.uniqlo.com/us/en/products/E478965-000.html",
+        "grade": 2,
+        "name": "HEATTECH Ultra Warm T-Shirt"
+      }
+    ],
+    "gate": {
+      "url": "https://www.uniqlo.com/us/en/products/E480868-000.html",
+      "k": 3
+    }
+  },
+  {
+    "id": "brand-gap-denim-jacket",
+    "query": "denim jacket",
+    "slice": "brand",
+    "brands": [
+      "gap"
+    ],
+    "judgments": [
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=894636002",
+        "grade": 3,
+        "name": "Denim Barn Jacket"
+      },
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=913919002",
+        "grade": 1,
+        "name": "Denim Big Shirt"
+      }
+    ],
+    "gate": {
+      "url": "https://www.gap.com/browse/product.do?pid=894636002",
+      "k": 3
+    }
+  },
+  {
+    "id": "brand-aritzia-halter-top",
+    "query": "halter top",
+    "slice": "brand",
+    "brands": [
+      "aritzia"
+    ],
+    "judgments": [
+      {
+        "url": "https://www.aritzia.com/us/en/product/honours-halter-top/134069.html",
+        "grade": 3,
+        "name": "Honours Halter Top - Crepette™"
+      },
+      {
+        "url": "https://www.aritzia.com/us/en/product/lexicon-halter-top/133917.html",
+        "grade": 3,
+        "name": "Lexicon Halter Top - Eversential™"
+      },
+      {
+        "url": "https://www.aritzia.com/us/en/product/convention-halter-top/132920.html",
+        "grade": 3,
+        "name": "Convention Halter Top - Eversential™"
+      },
+      {
+        "url": "https://www.aritzia.com/us/en/product/martini-satin-halter-top/118527.html",
+        "grade": 3,
+        "name": "Martini Satin Halter Top"
+      },
+      {
+        "url": "https://www.aritzia.com/us/en/product/fallaway-satin-top/128705.html",
+        "grade": 2,
+        "name": "Fallaway Satin Top"
+      }
+    ]
+  },
+  {
+    "id": "brand-rihoas-triangle-bikini",
+    "query": "triangle bikini set",
+    "slice": "brand",
+    "brands": [
+      "rihoas"
+    ],
+    "judgments": [
+      {
+        "url": "https://www.rihoas.com/products/white-halter-rhinestones-triangle-bikini-set",
+        "grade": 3,
+        "name": "White Halter Rhinestones Triangle Bikini Set"
+      },
+      {
+        "url": "https://www.rihoas.com/products/white-tie-strap-triangle-bikini-set",
+        "grade": 3,
+        "name": "White Tie Strap Triangle Bikini Set"
+      },
+      {
+        "url": "https://www.rihoas.com/products/blue-solid-tie-triangle-bikini-set",
+        "grade": 3,
+        "name": "Blue Solid Tie Triangle Bikini Set"
+      },
+      {
+        "url": "https://www.rihoas.com/products/black-halter-textured-triangle-bikini-set",
+        "grade": 3,
+        "name": "Black Halter Textured Triangle Bikini Set"
+      },
+      {
+        "url": "https://www.rihoas.com/products/wine-red-textured-triangle-bikini-set",
+        "grade": 3,
+        "name": "Wine Red Textured Triangle Bikini Set"
+      },
+      {
+        "url": "https://www.rihoas.com/products/blue-v-neck-textured-bralette-bikini-set",
+        "grade": 2,
+        "name": "Blue V Neck Textured Bralette Bikini Set"
+      }
+    ]
+  },
+  {
+    "id": "neg-no-sleeves-dress",
+    "query": "dress with no sleeves",
+    "slice": "negation",
+    "note": "BM25 scores \"sleeve\" positively. Expect poor results until expansion rewrites this.",
+    "judgments": [
+      {
+        "url": "https://www.rihoas.com/products/red-backless-slit-chiffon-maxi-dress",
+        "grade": 2,
+        "name": "Red Backless Slit Chiffon Maxi Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/blue-sleeveless-floral-chiffon-maxi-dress",
+        "grade": 3,
+        "name": "Blue Sleeveless Floral Chiffon Maxi Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/pink-round-neck-sleeveless-floral-maxi-dress",
+        "grade": 3,
+        "name": "Pink Round Neck Sleeveless Floral Maxi Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/black-square-neck-sleeveless-button-midi-dress",
+        "grade": 3,
+        "name": "Black Square Neck Sleeveless Button Midi Dress"
+      }
+    ]
+  },
+  {
+    "id": "neg-not-floral-maxi",
+    "query": "maxi dress that is not floral",
+    "slice": "negation",
+    "note": "Solid maxi dresses are correct; floral ones are the trap.",
+    "judgments": [
+      {
+        "url": "https://www.rihoas.com/products/red-backless-slit-chiffon-maxi-dress",
+        "grade": 3,
+        "name": "Red Backless Slit Chiffon Maxi Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/green-mock-neck-slit-chiffon-maxi-dress",
+        "grade": 3,
+        "name": "Green Mock Neck Slit Chiffon Maxi Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/black-sweetheart-neck-slit-ruffle-maxi-dress",
+        "grade": 3,
+        "name": "Black Sweetheart Neck Slit Ruffle Maxi Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/white-solid-tie-strap-a-line-maxi-dress",
+        "grade": 3,
+        "name": "White Solid Tie Strap A-Line Maxi Dress"
+      },
+      {
+        "url": "https://www.rihoas.com/products/yellow-x-cross-ruched-tunic-maxi-dress",
+        "grade": 3,
+        "name": "Yellow X Cross Ruched Tunic Maxi Dress"
+      }
+    ]
+  },
+  {
+    "id": "neg-shirt-without-buttons",
+    "query": "shirt without buttons",
+    "slice": "negation",
+    "judgments": [
+      {
+        "url": "https://www.rihoas.com/products/off-white-turtle-tie-regular-sleeve-shirt",
+        "grade": 3,
+        "name": "Off White Turtle Tie Regular Sleeve Shirt"
+      },
+      {
+        "url": "https://www.aritzia.com/us/en/product/archive-shirt/116625.html",
+        "grade": 1,
+        "name": "Archive Shirt"
+      }
+    ]
+  },
+  {
+    "id": "adjacent-wool-overcoat",
+    "query": "wool overcoat",
+    "slice": "attribute",
+    "note": "No outerwear is wool. The two wool knits are the closest real garments.",
+    "judgments": [
+      {
+        "url": "https://www.aritzia.com/us/en/product/peggy-sweater/133890.html",
+        "grade": 1,
+        "name": "Peggy Sweater"
+      },
+      {
+        "url": "https://www.aritzia.com/us/en/product/somerset-pant/135302.html",
+        "grade": 1,
+        "name": "Somerset Pant"
+      }
+    ]
+  },
+  {
+    "id": "zero-swimming-goggles",
+    "query": "swimming goggles",
+    "slice": "zero",
+    "note": "No eyewear or swim accessories exist, and none of these terms appear anywhere.",
+    "judgments": []
+  },
+  {
+    "id": "zero-hiking-boots",
+    "query": "waterproof hiking boots",
+    "slice": "zero",
+    "note": "The catalog has no footwear at all, and none of these terms appear anywhere, so a correct system returns nothing.",
+    "judgments": []
+  },
+  {
+    "id": "canary-tie-back-high-collar",
+    "query": "cotton tie-back shirt, high collar, one tie",
+    "slice": "canary",
+    "note": "The product plan's headline success criterion. NOTE: no perfect answer exists — the best match is 100% polyester, not cotton, and nothing in the catalog is literally tie-back. Graded 3 because it is the right garment type with two of the three distinctive attributes (turtle = high collar, tie).",
+    "judgments": [
+      {
+        "url": "https://www.rihoas.com/products/off-white-turtle-tie-regular-sleeve-shirt",
+        "grade": 3,
+        "name": "Off White Turtle Tie Regular Sleeve Shirt"
+      },
+      {
+        "url": "https://www.rihoas.com/products/apricot-turtle-drop-shoulder-tie-tee",
+        "grade": 2,
+        "name": "Apricot Turtle Drop Shoulder Tie Tee"
+      },
+      {
+        "url": "https://www.rihoas.com/products/apricot-turtle-pearls-button-tank-top",
+        "grade": 2,
+        "name": "Apricot Turtle Pearls Button Tank Top"
+      },
+      {
+        "url": "https://www.rihoas.com/products/apricot-turtle-cowl-sleeve-ruched-tee",
+        "grade": 2,
+        "name": "Apricot Turtle Cowl Sleeve Ruched Tee"
+      },
+      {
+        "url": "https://www.gap.com/browse/product.do?pid=913919002",
+        "grade": 1,
+        "name": "Denim Big Shirt"
+      },
+      {
+        "url": "https://www.rihoas.com/products/green-mock-neck-slit-chiffon-maxi-dress",
+        "grade": 1,
+        "name": "Green Mock Neck Slit Chiffon Maxi Dress"
+      }
+    ],
+    "gate": {
+      "url": "https://www.rihoas.com/products/off-white-turtle-tie-regular-sleeve-shirt",
+      "k": 3
+    }
+  }
+]

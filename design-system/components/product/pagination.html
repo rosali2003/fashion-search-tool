@@ -1,0 +1,60 @@
+<!-- @dsCard group="Product" -->
+<title>Ink · Pagination</title>
+<style>
+  :root {
+    --ground:#ffffff; --raised:#faf9f7; --sunken:#f4f2ef;
+    --ink:#111110; --muted:#6a6862; --faint:#9c9a94;
+    --line:#e5e3df; --line-strong:#c9c6c0;
+    --accent:#2f4f43; --accent-soft:#eef2f0;
+    --warn-bg:#fdf8ec; --warn-line:#e8dcb8; --warn-ink:#6d5a1f;
+    --sans:'Helvetica Neue',-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;
+    --t-micro:10.5px; --t-small:12.5px; --t-body:14px; --t-lead:17px; --t-display:30px;
+    --radius:2px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+       font-size:var(--t-body);line-height:1.5;-webkit-font-smoothing:antialiased;padding:28px}
+  .u-label{font-size:var(--t-micro);letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .u-num{font-variant-numeric:tabular-nums}
+  .spec{margin:0 0 22px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+  .spec h1{font-size:var(--t-lead);font-weight:500;margin:0 0 5px}
+  .spec p{margin:0;color:var(--muted);font-size:var(--t-small);max-width:64ch}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+  .stack{display:flex;flex-direction:column;gap:22px}
+  .cap{font-size:var(--t-micro);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:9px}
+  button{font-family:inherit;font-size:var(--t-body);color:inherit;cursor:pointer}
+
+    .pager{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap}
+    .pager__btn{min-width:38px;height:38px;padding:0 11px;border:1px solid transparent;background:none;
+                border-radius:var(--radius);font-size:var(--t-small);font-variant-numeric:tabular-nums;color:var(--muted)}
+    .pager__btn:hover:not(:disabled){color:var(--ink);background:var(--sunken)}
+    .pager__btn[aria-current=page]{border-color:var(--ink);color:var(--ink);font-weight:600}
+    .pager__btn:disabled{opacity:.3;cursor:not-allowed}
+    .pager__gap{color:var(--faint);padding:0 3px}
+    .pager__status{width:100%;text-align:center;font-size:var(--t-small);color:var(--faint);margin-top:14px}
+  </style>
+<div class="spec"><h1>Pagination</h1><p>Fifty per page over a single payload. There is no request behind a page turn: the rerank stage is the expensive, non-deterministic one, and re-running it per page would both cost a call per click and let the same product legitimately appear on two pages.</p></div>
+
+    <div class="cap">Three pages</div>
+    <nav class="pager">
+      <button class="pager__btn" disabled>&larr;</button>
+      <button class="pager__btn" aria-current="page">1</button>
+      <button class="pager__btn">2</button>
+      <button class="pager__btn">3</button>
+      <button class="pager__btn">&rarr;</button>
+      <div class="pager__status u-num">Showing 1–50 of 120</div>
+    </nav>
+    <div class="cap" style="margin-top:34px">Elided, deep in a long set</div>
+    <nav class="pager">
+      <button class="pager__btn">&larr;</button>
+      <button class="pager__btn">1</button>
+      <span class="pager__gap">…</span>
+      <button class="pager__btn">6</button>
+      <button class="pager__btn" aria-current="page">7</button>
+      <button class="pager__btn">8</button>
+      <span class="pager__gap">…</span>
+      <button class="pager__btn">14</button>
+      <button class="pager__btn">&rarr;</button>
+      <div class="pager__status u-num">Showing 301–350 of 700</div>
+    </nav>
+  
