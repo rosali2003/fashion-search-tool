@@ -117,6 +117,42 @@ export const PAGE_SIZE = 50
 export const MIN_SCORE = 2.0
 
 /**
+ * How many on-type candidates the type gate needs before it gives up and keeps
+ * everything. See search/typeGate.ts.
+ *
+ * Deliberately low, which is not where this started. The floor was originally 20
+ * on the assumption that it was protecting recall. Swept over the golden set it
+ * turned out to protect nothing: judged-relevant products lost and recall@120
+ * are *identical* at every floor from 0 to 30, because the gate's other two
+ * safeguards — it only fires on a type the shopper typed, and an exact
+ * subcategory match is always eligible — already do that job.
+ *
+ * What the floor does change is leakage. Measured across 27 golden queries:
+ *
+ *   floor   fires   nDCG@10   off-type products shipped
+ *   gate off   0     0.593      1499
+ *   20        19     0.597       675
+ *   10        20     0.597       565
+ *   5         22     0.590       360
+ *   0         23     0.586       312
+ *
+ * The nDCG column spans 0.011 against a ±0.077 standard error at n=27, so it
+ * does not distinguish these and must not be used to choose between them. The
+ * leakage column does, and it is the one the user actually sees: nDCG@10 grades
+ * the first ten results, while the complaint that prompted this — a bikini
+ * bottom under "high rise wide leg jeans" — was about rank 23 of 120. That
+ * blind spot is why the defect survived a green eval.
+ *
+ * So 5, which halves the leakage that 20 allows. It is kept above 0 only to
+ * cover a failure the golden set cannot exhibit: if category extraction broke
+ * across the corpus, the gate should hand back an unfiltered page rather than a
+ * near-empty one. A genuinely small answer is not that failure — when the
+ * catalog holds six jackets, six jackets is the honest response to "biker
+ * jacket", and padding it to 120 with jeans is the bug.
+ */
+export const OFF_TYPE_FLOOR = 5
+
+/**
  * INERT. Tantivy hardcodes BM25's k1 and b as module-level constants
  * (K1 = 1.2, B = 0.75 in src/query/bm25.rs) and pg_search 0.23.1 exposes no
  * override, so these cannot be tuned — see

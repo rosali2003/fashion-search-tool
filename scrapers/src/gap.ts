@@ -11,6 +11,7 @@
 
 import { createBrowser, createStealthPage } from './browser.js'
 import { sleep, randomDelay, parsePrice, slugify, downloadImages, saveProducts } from './utils.js'
+import { readJsonLd, offerList, stripHtml, FIBER_RE } from './jsonld.js'
 import type { ScrapedProduct } from './types.js'
 import type { Page } from 'playwright'
 
@@ -19,10 +20,6 @@ const BASE_URL = 'https://www.gap.com'
 // Women → Categories → Shop All Styles
 const LISTING_URL = `${BASE_URL}/browse/category.do?cid=1127938`
 const MAX_PRODUCTS = 50
-
-function stripHtml(html: string): string {
-  return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
-}
 
 async function collectProductUrls(limit: number): Promise<string[]> {
   const browser = await createBrowser()
@@ -61,31 +58,6 @@ async function collectProductUrls(limit: number): Promise<string[]> {
   return urls
 }
 
-interface JsonLdProduct {
-  '@type': string
-  name?: string
-  description?: string
-  image?: string | string[]
-  offers?: Array<{ price?: string | number; priceCurrency?: string }> | { price?: string | number }
-}
-
-function readJsonLdProduct(blocks: string[]): JsonLdProduct | null {
-  for (const raw of blocks) {
-    try {
-      const parsed = JSON.parse(raw)
-      const candidates = Array.isArray(parsed) ? parsed : [parsed]
-      const product = candidates.find((c) => c?.['@type'] === 'Product')
-      if (product) return product as JsonLdProduct
-    } catch {
-      /* ignore malformed block */
-    }
-  }
-  return null
-}
-
-const FIBER_RE =
-  /\d{1,3}%\s*(?:cotton|polyester|nylon|spandex|elastane|wool|linen|viscose|rayon|lyocell|modal|acrylic|tencel|silk|cashmere|polyamide)[^\n.]{0,40}/i
-
 async function scrapeProductPage(page: Page, url: string): Promise<ScrapedProduct | null> {
   try {
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 })
@@ -94,7 +66,7 @@ async function scrapeProductPage(page: Page, url: string): Promise<ScrapedProduc
     const ldBlocks = await page.$$eval('script[type="application/ld+json"]', (els) =>
       els.map((el) => el.textContent ?? '')
     )
-    const ld = readJsonLdProduct(ldBlocks)
+    const ld = readJsonLd(ldBlocks)
 
     const name = ld?.name?.trim() || (await page.$eval('h1', (el) => el.textContent?.trim() ?? '').catch(() => ''))
     if (!name) return null
@@ -102,10 +74,7 @@ async function scrapeProductPage(page: Page, url: string): Promise<ScrapedProduc
     const description = ld?.description ? stripHtml(ld.description) : null
 
     // Price from the JSON-LD offers (first offer / single offer).
-    let priceText = ''
-    const offers = ld?.offers
-    if (Array.isArray(offers)) priceText = String(offers[0]?.price ?? '')
-    else if (offers) priceText = String(offers.price ?? '')
+    const priceText = String(offerList(ld?.offers)[0]?.price ?? '')
     const priceCents = priceText ? parsePrice(priceText) : null
 
     // Material — read the fabric composition from the page copy.

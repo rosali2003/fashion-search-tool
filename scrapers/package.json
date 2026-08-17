@@ -7,6 +7,11 @@
     "scrape:gap": "tsx src/gap.ts",
     "scrape:uniqlo": "tsx src/uniqlo.ts",
     "scrape:rihoas": "tsx src/rihoas.ts",
+    "scrape:everlane": "tsx src/everlane.ts",
+    "scrape:skims": "tsx src/skims.ts",
+    "scrape:reformation": "tsx src/reformation.ts",
+    "scrape:madewell": "tsx src/madewell.ts",
+    "scrape:sezane": "tsx src/sezane.ts",
     "scrape:all": "tsx src/run.ts",
     "test": "node --import tsx --test \"src/**/*.test.ts\"",
     "typecheck": "tsc --noEmit"

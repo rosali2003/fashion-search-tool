@@ -12,6 +12,7 @@
 
 import { createBrowser, createStealthPage } from './browser.js'
 import { sleep, randomDelay, parsePrice, slugify, downloadImagesViaPage, saveProducts } from './utils.js'
+import { FIBER_RE } from './jsonld.js'
 import type { ScrapedProduct } from './types.js'
 import type { Page } from 'playwright'
 
@@ -87,9 +88,6 @@ async function collectProductUrls(limit: number): Promise<string[]> {
 
   return urls
 }
-
-const FIBER_RE =
-  /\d{1,3}%\s*(?:cotton|polyester|nylon|spandex|elastane|wool|linen|viscose|rayon|lyocell|modal|acrylic|tencel|silk|cashmere|polyamide)/i
 
 // Aritzia rate-limits rapid PDP navigation and serves a block page whose <h1> is
 // just the site name. Detect that so we can back off and retry.

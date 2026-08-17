@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import { bm25Search, countMatchingFilters, type Candidate } from '../search/repository.js'
 import { capBrandShare } from '../search/diversity.js'
+import { applyTypeGate } from '../search/typeGate.js'
 import { RERANK_WINDOW, RESULT_LIMIT, PAGE_SIZE } from '../search/config.js'
 import { expandQuery, expansionToText } from '../llm/expand.js'
 import { rerank } from '../llm/rerank.js'
@@ -127,10 +128,23 @@ search.post('/', async (c) => {
     return c.json({ results: [], meta })
   }
 
-  // --- 3. diversity guard ------------------------------------------------
-  const windowed = capBrandShare(candidates, RERANK_WINDOW)
+  // --- 3. type gate ------------------------------------------------------
+  //
+  // Runs before the diversity guard so the rerank window is filled with the
+  // right kind of garment. Gating after the window would mean the model spends
+  // its 60 slots judging bikini bottoms against jeans, and the diversity cap
+  // would be balancing brand share across a set half of which is about to be
+  // discarded anyway.
+  const intent = expansion.value.attributes
+  const gated = applyTypeGate(candidates, {
+    category: typeof intent.category === 'string' ? intent.category : null,
+    subcategory: typeof intent.subcategory === 'string' ? intent.subcategory : null,
+  }, query)
 
-  // --- 4. rerank ---------------------------------------------------------
+  // --- 4. diversity guard ------------------------------------------------
+  const windowed = capBrandShare(gated.kept, RERANK_WINDOW)
+
+  // --- 5. rerank ---------------------------------------------------------
   //
   // The model curates the HEAD; BM25 supplies the tail.
   //
@@ -162,7 +176,7 @@ search.post('/', async (c) => {
     ...windowed.filter((_c, i) => !pickedIndices.has(i)),
   ]
 
-  // --- 5. preference blend ----------------------------------------------
+  // --- 6. preference blend ----------------------------------------------
   //
   // Relevance is the upstream *position*, not the raw BM25 score: mixing a
   // position with an unbounded score would let a single very high scorer dominate
@@ -175,7 +189,7 @@ search.post('/', async (c) => {
     (_c, i) => 1 - i / Math.max(1, orderedCandidates.length),
   ).sort((a, b) => b.finalScore - a.finalScore)
 
-  // --- 6. respond --------------------------------------------------------
+  // --- 7. respond --------------------------------------------------------
   //
   // The window is 60 but the client pages 50 at a time, so stopping at the window
   // edge would yield one full page and a stub. The tail — candidates BM25 found
@@ -187,8 +201,11 @@ search.post('/', async (c) => {
   // and the boundary between them is never interleaved. A tail item cannot
   // outrank a curated one no matter how its affinity scores, because it was
   // never scored against them.
+  // Sourced from the gated set, not from `candidates`. Reading the tail off the
+  // ungated list would hand back every off-type candidate the gate just removed,
+  // one page further down, which is exactly the symptom the gate exists to fix.
   const inWindow = new Set(windowed)
-  const tail = candidates.filter((c) => !inWindow.has(c))
+  const tail = gated.kept.filter((c) => !inWindow.has(c))
 
   const results = [
     ...scored.map((s) => {
@@ -207,7 +224,7 @@ search.post('/', async (c) => {
   console.log(
     JSON.stringify({
       level: 'info', stage: 'search', query_len: query.length,
-      candidates: candidates.length, results: results.length,
+      candidates: candidates.length, gated_out: gated.dropped, results: results.length,
       degraded: labels(expansion.degraded, reranked.degraded),
       llm_calls: usage.calls, cost_usd: Number(cost.toFixed(6)),
       ms: Date.now() - started,
@@ -220,6 +237,11 @@ search.post('/', async (c) => {
       degraded: labels(expansion.degraded, reranked.degraded),
       took_ms: Date.now() - started,
       total_candidates: candidates.length,
+      // Off-type candidates the gate removed, and whether it fired at all. A
+      // zero with type_gated true means the query was already clean; false
+      // means there was no type intent, or too little on-type left to trust it.
+      type_gated: gated.applied,
+      type_gated_out: gated.dropped,
       personalized: prefs !== null,
       // How many of the returned results were actually judged. Past this index
       // the list is raw BM25 order, and the UI says so rather than implying the

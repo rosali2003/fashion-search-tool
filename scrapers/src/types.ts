@@ -57,7 +57,12 @@ export function normalizeSize(raw: string): string | null {
   if (!s) return null
   if (/^(XXXS|XXS|XS|S|M|L|XL|XXL|XXXL|2XL|3XL|4XL)$/.test(s)) return s
   // Numeric sizes (waist, dress size) and ranges like "28X32".
-  if (/^\d{1,2}(X\d{1,2})?$/.test(s)) return s
+  //
+  // Three digits, not two. Reformation's US dress sizes are zero-padded — 000,
+  // 002, 004, 006 — so a two-digit bound silently dropped every size the brand
+  // publishes. The SKU and colour-code rejections below still hold because those
+  // are never bare digits: they carry a letter or a separator.
+  if (/^\d{1,3}(X\d{1,2})?$/.test(s)) return s
   if (/^(ONESIZE|OS|FREE|F)$/.test(s)) return 'ONE SIZE'
   return null
 }

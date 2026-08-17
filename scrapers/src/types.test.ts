@@ -29,12 +29,23 @@ test('size labels normalise, and non-sizes are rejected', () => {
   assert.equal(normalizeSize('28x32'), '28X32')
   assert.equal(normalizeSize('one size'), 'ONE SIZE')
 
+  // Reformation publishes zero-padded US dress sizes. A two-digit bound used to
+  // drop all of them, which would have left the whole brand with no size_range.
+  assert.equal(normalizeSize('000'), '000')
+  assert.equal(normalizeSize('002'), '002')
+  assert.equal(normalizeSize('012'), '012')
+
   // These are the failure mode worth guarding: colour codes and SKUs sit right
   // next to sizes in the same API payloads.
   assert.equal(normalizeSize('00 WHITE'), null)
   assert.equal(normalizeSize('E465760-000'), null)
   assert.equal(normalizeSize('COL09'), null)
   assert.equal(normalizeSize(''), null)
+
+  // Widening the numeric bound to three digits must not start admitting these.
+  assert.equal(normalizeSize('0103940'), null, 'a Reformation style id is not a size')
+  assert.equal(normalizeSize('WR2629'), null, 'a Madewell colour code is not a size')
+  assert.equal(normalizeSize('OA937'), null, 'a Madewell style code is not a size')
 })
 
 test('size lists de-duplicate and drop unparseable entries', () => {

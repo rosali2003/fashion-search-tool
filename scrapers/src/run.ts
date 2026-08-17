@@ -13,7 +13,20 @@ import path from 'path'
 const scrapersRoot = new URL('..', import.meta.url).pathname
 const tsxBin = path.join(scrapersRoot, 'node_modules', '.bin', 'tsx')
 
-const ALL_BRANDS = ['rihoas', 'uniqlo', 'gap', 'aritzia'] as const
+// `sezane` is deliberately absent. It attaches to a Chrome the user launched by
+// hand (see the header of sezane.ts), so it cannot run in the unattended cron
+// this orchestrator backs — it would fail the nightly run every night. Scrape it
+// with `pnpm scrape:sezane` when you want it.
+const ALL_BRANDS = [
+  'rihoas',
+  'uniqlo',
+  'gap',
+  'aritzia',
+  'everlane',
+  'skims',
+  'reformation',
+  'madewell',
+] as const
 type Brand = typeof ALL_BRANDS[number]
 
 const requested = process.argv.slice(2) as Brand[]
