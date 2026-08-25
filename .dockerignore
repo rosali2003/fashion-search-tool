@@ -1,0 +1,55 @@
+# The Docker build context is the REPO ROOT, not backend/ — pnpm needs the root
+# manifest, pnpm-workspace.yaml and the lockfile to resolve a --frozen-lockfile
+# install. So this file lives here rather than in backend/.
+
+# The scraped catalogue and the content-addressed image store: 729MB across 4151
+# files, regenerable via `pnpm refresh`, and moving to object storage. Sending
+# this to the daemon is what made the first deploy attempt upload 1.5GB.
+output/
+
+# Installed inside the image from the lockfile, per stage. Copying the host tree
+# in would also import macOS-native binaries into a Linux image and break pnpm's
+# symlink layout.
+node_modules
+**/node_modules
+
+# Never let a stale local build shadow what tsc produces in the build stage.
+dist
+**/dist
+*.tsbuildinfo
+
+# Secrets. The container is configured from platform env vars; the .env lookup
+# in db/index.ts is expected to find nothing and silently no-op.
+.env
+.env.*
+!.env.example
+
+.git
+.gitignore
+.dockerignore
+.github
+
+# Local-only infrastructure and tooling.
+docker-compose.yml
+.gstack/
+.claude/
+.vercelignore
+design-system/
+scripts/
+
+# Docs.
+*.md
+
+# Operator tooling, deliberately not part of the runtime image: the scrapers need
+# Playwright and a CDP-attached Chrome, and the eval harness writes into the
+# source tree. Neither is ever COPYd.
+#
+# The manifests must survive the exclusion, though — `--frozen-lockfile`
+# validates the lockfile against EVERY workspace package.json, so the install
+# fails without them. .dockerignore is last-match-wins, which is why these
+# negations must stay below the excludes above.
+frontend/**
+scrapers/**
+backend/evals/**
+!frontend/package.json
+!scrapers/package.json

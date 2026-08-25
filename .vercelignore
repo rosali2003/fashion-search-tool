@@ -1,0 +1,22 @@
+# Vercel's CLI does not read .gitignore for local deploys, so the exclusions
+# there have to be repeated here or they are uploaded. Without this file a
+# `vercel deploy` from the repo root uploads ~1.5GB.
+
+# The scraped catalog and content-addressed image store: 789MB, regenerable
+# via `pnpm refresh`. Never belongs in a deploy — see the note in .gitignore.
+output/
+
+node_modules
+dist
+.env
+
+.git
+.gstack
+.claude
+
+# Local-only infrastructure.
+docker-compose.yml
+
+# Scrapers and the eval harness are operator tooling, not part of any deploy.
+scrapers/
+backend/evals/
