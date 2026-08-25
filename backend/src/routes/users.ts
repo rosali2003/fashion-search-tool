@@ -4,6 +4,7 @@ import {
   createUser, updatePreferences, loadPreferences, knownBrands,
   recordComparison, pickPair,
 } from '../preferences/repository.js'
+import { imageUrlFor } from './imageUrl.js'
 import { isProfileStable, STABLE_AFTER_COMPARISONS } from '../preferences/elo.js'
 import {
   BODY_TYPES, SHOULDERS, TORSO, WAIST, QUALITY_TIERS,
@@ -190,7 +191,7 @@ users.post('/:id/pair', async (c) => {
       name: p.name,
       price_cents: p.price_cents,
       material_badge: p.material_clean?.split(',')[0]?.trim() ?? null,
-      image_url: p.image_hashes[0] ? `/api/images/${p.image_hashes[0]}` : null,
+      image_url: imageUrlFor(p.image_hashes),
     })),
   })
 })

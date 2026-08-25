@@ -4,6 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/index.js",
     "migrate": "tsx src/db/migrate.ts",
     "ingest": "tsx src/ingest/run.ts",
     "eval": "tsx evals/src/run.ts",
@@ -25,5 +27,8 @@
     "@types/pg": "^8.11.10",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": ">=22 <23"
   }
 }

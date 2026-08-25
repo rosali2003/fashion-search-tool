@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import { bm25Search, countMatchingFilters, type Candidate } from '../search/repository.js'
 import { capBrandShare } from '../search/diversity.js'
+import { imageUrlFor } from './imageUrl.js'
 import { applyTypeGate } from '../search/typeGate.js'
 import { RERANK_WINDOW, RESULT_LIMIT, PAGE_SIZE } from '../search/config.js'
 import { expandQuery, expansionToText } from '../llm/expand.js'
@@ -62,7 +63,7 @@ function toResult(
     price_cents: c.price_cents,
     material_badge: materialBadge(c),
     material_full: c.material_clean,
-    image_url: c.image_hashes[0] ? `/api/images/${c.image_hashes[0]}` : null,
+    image_url: imageUrlFor(c.image_hashes),
     // UTM tagging so outbound clicks are attributable in the brand's own analytics.
     product_url: `${c.product_url}${c.product_url.includes('?') ? '&' : '?'}utm_source=ink&utm_medium=referral`,
     attributes: attributesOf(c),

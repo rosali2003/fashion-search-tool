@@ -1,0 +1,5 @@
+{
+  "//": "Emit config. Separate from tsconfig.json so `pnpm typecheck` keeps covering the test files while the compiled dist/ ships without them. `extends` inherits include/outDir/rootDir unchanged.",
+  "extends": "./tsconfig.json",
+  "exclude": ["src/**/*.test.ts", "node_modules", "dist"]
+}
