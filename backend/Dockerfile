@@ -39,16 +39,19 @@ FROM base AS prod-deps
 # included unless matched explicitly, so the root-level tsx devDependency and its
 # esbuild binary never reach this stage. `--prod` then drops backend's own
 # devDependencies (typescript, tsx, @types/*).
-RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
-    pnpm install --frozen-lockfile --prod --filter backend
+# No BuildKit cache mount here. Railway's Metal builder rejects a cache mount
+# whose id lacks its own cacheKey prefix ("dockerfile invalid: flag
+# '--mount=type=cache,id=pnpm-store,...' is missing the cacheKey prefix from its
+# id"), and a store that only speeds up rebuilds is not worth a platform-specific
+# id scheme in a Dockerfile that also has to build locally.
+RUN pnpm install --frozen-lockfile --prod --filter backend
 
 ##############################################################################
 # build — full backend tree, then tsc.
 ##############################################################################
 FROM base AS build
 
-RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store \
-    pnpm install --frozen-lockfile --filter backend
+RUN pnpm install --frozen-lockfile --filter backend
 
 COPY backend/tsconfig.json backend/tsconfig.build.json backend/
 COPY backend/src backend/src
