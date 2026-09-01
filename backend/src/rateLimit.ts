@@ -30,14 +30,31 @@ const WINDOW_MS = 60_000
 const hits = new Map<string, number[]>()
 
 /**
- * Trusting the leftmost x-forwarded-for entry is correct *here* and would not be
- * in general: this app is only ever reached through a platform proxy that
- * appends the real client IP, and the socket address would otherwise be the
- * proxy itself — one bucket for the entire internet. A spoofed header can evade
- * the limit, which is acceptable for a budget guard and would not be for
- * anything security-bearing.
+ * The client IP as seen through however many proxies are in front of us.
+ *
+ * There are two paths to this service and they do NOT agree on where the real
+ * client lands, which is why this is not simply the leftmost x-forwarded-for:
+ *
+ *   direct to Railway   x-forwarded-for: <client>, <railway-edge>
+ *   via the Vercel      x-forwarded-for: <vercel-edge>, <railway-edge>
+ *   rewrite             x-vercel-forwarded-for: <client>
+ *
+ * Vercel REPLACES the leftmost x-forwarded-for with its own edge address rather
+ * than prepending the caller, and that address differs from request to request.
+ * Keying on x-forwarded-for alone therefore gave every request through
+ * inksearch.shop its own bucket — 23 consecutive searches against the public
+ * domain never once hit the limit, while the same burst sent straight at Railway
+ * 429'd on the 21st. The public path, the only one that matters here, was the
+ * unprotected one.
+ *
+ * x-vercel-forwarded-for is checked first because its presence *is* the signal
+ * that the request arrived through the rewrite. Both headers are spoofable by a
+ * caller who reaches Railway directly; that is acceptable for a budget guard and
+ * would not be for anything security-bearing.
  */
 function clientKey(c: Context): string {
+  const vercel = c.req.header('x-vercel-forwarded-for')
+  if (vercel) return vercel.split(',')[0]!.trim()
   const fwd = c.req.header('x-forwarded-for')
   if (fwd) return fwd.split(',')[0]!.trim()
   return c.req.header('cf-connecting-ip') ?? 'unknown'
