@@ -23,6 +23,7 @@
     "sync:images": "tsx --env-file-if-exists=.env scripts/sync-images-to-r2.ts",
     "test": "pnpm --filter backend test && pnpm --filter scrapers test",
     "eval": "pnpm --filter backend eval",
+    "brands": "pnpm --filter backend brands",
     "ingest": "pnpm --filter backend ingest",
     "enrich": "pnpm --filter backend enrich",
     "migrate": "pnpm --filter backend migrate"

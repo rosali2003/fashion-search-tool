@@ -42,6 +42,13 @@ test('size labels normalise, and non-sizes are rejected', () => {
   assert.equal(normalizeSize('COL09'), null)
   assert.equal(normalizeSize(''), null)
 
+  // Non-strings reach this from live API payloads. A number is a real size; an
+  // object is what Uniqlo's `display` field became, and it must not crash.
+  assert.equal(normalizeSize(28), '28', 'a numeric size is still a size')
+  assert.equal(normalizeSize({ showFlag: true, chipType: 0 }), null, "Uniqlo's display object is not a size")
+  assert.equal(normalizeSize(null), null)
+  assert.equal(normalizeSize(undefined), null)
+
   // Widening the numeric bound to three digits must not start admitting these.
   assert.equal(normalizeSize('0103940'), null, 'a Reformation style id is not a size')
   assert.equal(normalizeSize('WR2629'), null, 'a Madewell colour code is not a size')

@@ -1,16 +1,17 @@
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
-  clearUserId, fetchOptions, fetchProfile, getUserId, recordComparison,
+  fetchOptions, fetchProfile, fetchSession, getUserId, logout, recordComparison,
   search, suggestPair,
 } from './api/client.js'
 import type {
-  OnboardingOptions, PairItem, Profile, SearchResult, SearchMeta,
+  AuthSession, OnboardingOptions, PairItem, Profile, SearchResult, SearchMeta,
 } from './api/types.js'
 import { Questionnaire } from './onboarding/Questionnaire.js'
 import { ResultCard } from './components/ResultCard.js'
 import { Pagination } from './components/Pagination.js'
 import { Compare } from './components/Compare.js'
 import { ProfileSummary } from './components/ProfileSummary.js'
+import { AccountDialog } from './components/AccountDialog.js'
 import { DegradedBanner, EmptyState, ErrorState, LoadingGrid } from './components/States.js'
 
 /**
@@ -38,6 +39,10 @@ export default function App() {
   const [options, setOptions] = useState<OnboardingOptions | null>(null)
   const [userId, setUserId] = useState<string | null>(getUserId())
   const [profile, setProfile] = useState<Profile | null>(null)
+  const [account, setAccount] = useState<AuthSession>({ googleEnabled: false, emailEnabled: false, linkingEmail: null, user: null })
+  const [accountOpen, setAccountOpen] = useState(false)
+  const [accountMessage, setAccountMessage] = useState<string | null>(null)
+  const [signingOut, setSigningOut] = useState(false)
 
   /**
    * A new user meets the questionnaire, not the search bar.
@@ -68,23 +73,34 @@ export default function App() {
   const inFlight = useRef<AbortController | null>(null)
 
   useEffect(() => {
-    fetchOptions()
-      .then((o) => {
-        setOptions(o)
-        // Decided once, when the vocabularies arrive: a known user goes straight
-        // to search, an unknown one is asked the questions first.
-        setView(getUserId() ? 'search' : 'onboarding')
+    let active = true
+    void Promise.all([fetchOptions().catch(() => null), fetchSession().catch(() => null)])
+      .then(([loadedOptions, session]) => {
+        if (!active) return
+        setOptions(loadedOptions)
+        if (session) {
+          setAccount(session)
+          setUserId(session.user?.id ?? null)
+        }
+        const url = new URL(window.location.href)
+        const status = url.searchParams.get('auth')
+        setView(session?.user || !loadedOptions || status ? 'search' : 'onboarding')
+        if (status === 'link' && session?.linkingEmail) setAccountOpen(true)
+        if (status === 'success' && session?.user?.authenticated) setAccountMessage('You’re signed in. Your profile is saved across devices.')
+        if (status === 'cancelled') setAccountMessage('Sign-in cancelled. You can continue as a guest.')
+        if (status === 'failed' || status === 'unavailable') setAccountMessage('Sign-in could not be completed. Please try again; you can still browse as a guest.')
+        if (status === 'link_unavailable') setAccountMessage('Google linking is temporarily unavailable. Please try again later; you can still browse as a guest.')
+        if (status) {
+          url.searchParams.delete('auth')
+          window.history.replaceState(null, '', url.pathname + url.search + url.hash)
+        }
       })
-      .catch(() => {
-        // Without options the questionnaire cannot render, but search still
-        // works — so fail into the usable half rather than a dead end.
-        setOptions(null)
-        setView('search')
-      })
+    return () => { active = false }
   }, [])
 
   const loadProfile = useCallback((id: string) => {
-    fetchProfile(id).then(setProfile).catch(() => setProfile(null))
+    fetchProfile(id).then(value => { if (getUserId() === id) setProfile(value) })
+      .catch(() => { if (getUserId() === id) setProfile(null) })
   }, [])
 
   useEffect(() => {
@@ -176,11 +192,49 @@ export default function App() {
     }
   }
 
-  function reset() {
-    clearUserId()
-    setUserId(null)
-    setProfile(null)
-    setView('onboarding')
+  const refreshAccount = useCallback(async () => {
+    const previousId = getUserId()
+    const session = await fetchSession()
+    setAccount(session)
+    setUserId(session.user?.id ?? null)
+    if (previousId !== (session.user?.id ?? null)) {
+      inFlight.current?.abort()
+      setProfile(null)
+      setResults(null)
+      setMeta(null)
+      setPair(null)
+      setLoading(false)
+      setSubmitted('')
+      setError(null)
+    }
+    if (session.user) loadProfile(session.user.id)
+  }, [loadProfile])
+
+  useEffect(() => {
+    const sync = () => { void refreshAccount().catch(() => undefined) }
+    window.addEventListener('focus', sync)
+    return () => window.removeEventListener('focus', sync)
+  }, [refreshAccount])
+
+  async function reset() {
+    setSigningOut(true)
+    try {
+      await logout()
+      inFlight.current?.abort()
+      setAccount(previous => ({ ...previous, user: null, linkingEmail: null }))
+      setUserId(null)
+      setProfile(null)
+      setResults(null)
+      setMeta(null)
+      setPair(null)
+      setLoading(false)
+      setSubmitted('')
+      setError(null)
+      setAccountMessage(null)
+      setView('search')
+    } catch {
+      setAccountMessage('Could not sign out. Please try again.')
+    } finally { setSigningOut(false) }
   }
 
   const pageSize = meta?.page_size ?? FALLBACK_PAGE_SIZE
@@ -255,18 +309,37 @@ export default function App() {
 
   if (view === null) return null
 
+  const canSignIn = account.googleEnabled || account.emailEnabled
+  const accountDialog = accountOpen && (
+    <AccountDialog key={account.user?.authenticated ? account.user.id : 'guest'} session={account}
+      onClose={() => setAccountOpen(false)} onChanged={async () => {
+        await refreshAccount()
+        setView('search')
+      }} />
+  )
+
   if (view === 'onboarding' && options) {
     return (
-      <Questionnaire
-        options={options}
-        mode={userId ? 'edit' : 'onboard'}
-        onDone={(id) => {
-          if (id) setUserId(id)
-          setView('search')
-          if (submitted) void runSearch(submitted, brands)
-        }}
-        onSkip={() => setView('search')}
-      />
+      <>
+        {canSignIn && !account.user?.authenticated && <div className="account-invite">
+          <button className="btn btn--quiet" onClick={() => setAccountOpen(true)}>Sign in / Sign up</button>
+        </div>}
+        <Questionnaire
+          options={options}
+          mode={userId ? 'edit' : 'onboard'}
+          onDone={(id) => {
+            if (id) {
+              setUserId(id)
+              loadProfile(id)
+              void refreshAccount().catch(() => undefined)
+            }
+            setView('search')
+            if (submitted) void runSearch(submitted, brands)
+          }}
+          onSkip={() => setView('search')}
+        />
+        {accountDialog}
+      </>
     )
   }
 
@@ -284,14 +357,21 @@ export default function App() {
                 <button className="btn btn--quiet" onClick={() => setView('onboarding')}>
                   Edit profile
                 </button>
-                <button className="btn btn--quiet" onClick={reset}>
-                  Start over
+                <button className="btn btn--quiet" onClick={() => void reset()} disabled={signingOut}>
+                  {account.user?.authenticated ? 'Sign out' : 'Start over'}
                 </button>
               </>
             ) : (
               <button className="btn btn--primary" onClick={() => setView('onboarding')}>
                 Set up your profile
               </button>
+            )}
+            {account.user?.authenticated ? (
+              <button className="btn btn--quiet" onClick={() => setAccountOpen(true)}>
+                {account.user.name ? `Hi, ${account.user.name}` : 'Your account'}
+              </button>
+            ) : canSignIn && (
+              <button className="btn btn--quiet" onClick={() => setAccountOpen(true)}>Sign in / Sign up</button>
             )}
           </span>
         </div>
@@ -353,6 +433,11 @@ export default function App() {
 
       <main className="shell">
         <div ref={gridTop} />
+        {accountMessage && <p role="status" className="account-invite">{accountMessage}</p>}
+        {userId && !account.user?.authenticated && canSignIn && <div className="account-invite">
+          <span>Save your profile across devices.</span>
+          <button className="btn btn--quiet" onClick={() => setAccountOpen(true)}>Sign in / Sign up</button>
+        </div>}
 
         {profile && options && (
           <div className="panel" style={{ marginTop: 20 }}>
@@ -438,6 +523,7 @@ export default function App() {
           />
         )}
       </main>
+      {accountDialog}
     </>
   )
 }

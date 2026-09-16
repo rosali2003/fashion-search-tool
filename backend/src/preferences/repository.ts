@@ -110,7 +110,7 @@ export async function createUser(input: OnboardingInput): Promise<{ userId: stri
 
 export async function updatePreferences(userId: string, input: OnboardingInput): Promise<void> {
   const brands = await knownBrands()
-  const patch: Record<string, unknown> = { updated_at: new Date() }
+  const patch: Record<string, unknown> = { updated_at: new Date(), onboarded_at: new Date() }
 
   if (input.heightCm !== undefined) patch.height_cm = input.heightCm
   if (input.bodyType !== undefined) patch.body_type = input.bodyType

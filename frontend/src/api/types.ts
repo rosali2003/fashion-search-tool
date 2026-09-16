@@ -17,6 +17,13 @@ export interface SearchResult {
   aesthetic_reason: string | null
 }
 
+export interface AuthSession {
+  googleEnabled: boolean
+  emailEnabled: boolean
+  linkingEmail: string | null
+  user: { id: string; name: string | null; authenticated: boolean } | null
+}
+
 export interface SearchMeta {
   /** Stage names that fell back, e.g. ['expansion','rerank']. Empty when healthy. */
   degraded: string[]

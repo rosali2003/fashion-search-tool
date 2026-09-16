@@ -148,8 +148,8 @@ button {
 .masthead__inner {
   max-width: var(--shell);
   margin: 0 auto;
-  padding: 0 28px;
-  height: 62px;
+  padding: 8px 28px;
+  min-height: 62px;
   display: flex;
   align-items: center;
   gap: 18px;
@@ -161,7 +161,21 @@ button {
   text-transform: uppercase;
   text-indent: 0.3em; /* balances the trailing letter-space */
 }
-.masthead__actions { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+.masthead__actions { min-width: 0; margin-left: auto; display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 4px; }
+.masthead__actions .btn { max-width: 100%; overflow-wrap: anywhere; }
+
+.account-invite { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; padding: 12px 16px; }
+.account-dialog { width: min(460px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow: auto; padding: 24px; border: 1px solid var(--line); background: var(--ground); color: var(--ink); }
+.account-dialog::backdrop { background: rgb(0 0 0 / 35%); }
+.account-dialog__heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.account-dialog h2 { margin: 0; font-size: var(--t-lead); font-weight: 500; }
+.account-dialog p { line-height: 1.6; }
+.account-dialog label { display: block; margin: 16px 0; }
+.account-dialog input { display: block; width: 100%; padding: 10px; margin-top: 6px; border: 1px solid var(--line); background: var(--ground); color: var(--ink); font: inherit; }
+.account-dialog input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.account-dialog__google { display: flex; justify-content: center; text-decoration: none; margin: 16px 0; }
+.account-dialog__actions { display: flex; flex-wrap: wrap; margin: 8px 0; }
+.account-error { color: #9b2929; }
 
 /* ---------- search ------------------------------------------------------- */
 

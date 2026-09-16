@@ -67,9 +67,9 @@ interface DetailResponse {
     // typed optionally and read defensively below — a shape change yields null
     // rather than a crashed scrape. VERIFY against a live response the first time
     // this runs; `sizes` is the field most likely to have moved.
-    sizes?: Array<{ code?: string; name?: string; display?: string }>
+    sizes?: Array<UniqloSize>
     summary?: {
-      sizes?: Array<{ code?: string; name?: string; display?: string }>
+      sizes?: Array<UniqloSize>
     }
     modelSize?: {
       height?: string | number
@@ -82,10 +82,28 @@ interface DetailResponse {
   }
 }
 
-/** Read the size range out of whichever field the API happens to expose. */
+interface UniqloSize {
+  code?: string
+  name?: string
+  displayCode?: string
+  /** Was a label string; now a display-control object. See readSizes. */
+  display?: { showFlag?: boolean; chipType?: number }
+}
+
+/**
+ * Read the size range out of whichever field the API happens to expose.
+ *
+ * `name` carries the label ("XXS", "M", "28"). `display` used to and no longer
+ * does — it is now {showFlag, chipType}, which is what broke this scraper.
+ *
+ * `displayCode` is deliberately not a fallback even though it looks like one:
+ * its values are zero-padded ordinals ("001", "002") that normalizeSize would
+ * happily accept as numeric sizes, so every garment would report sizes 1-9.
+ * `code` ("SMA001") is safe because normalizeSize rejects it.
+ */
 function readSizes(detail: DetailResponse['result'] | null): string[] {
   const candidates = detail?.sizes ?? detail?.summary?.sizes ?? []
-  return normalizeSizes(candidates.map((s) => s.display ?? s.name ?? s.code))
+  return normalizeSizes(candidates.map((s) => s.name ?? s.code))
 }
 
 /** Read model height and worn size, tolerating string or numeric heights. */

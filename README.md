@@ -21,7 +21,8 @@ from a 298-item catalog with no LLM in the loop.
 
 | | |
 |---|---|
-| `pnpm refresh` | daily pipeline: scrape → ingest → enrich |
+| `pnpm refresh` | daily pipeline: scrape brands that are due → ingest → enrich |
+| `pnpm brands list` | per-brand scrape cadence; `pnpm brands set gap '2 weeks'` |
 | `pnpm eval` | retrieval metrics against the golden set ($0, ~3s) |
 | `pnpm test` | 57 unit tests |
 | `pnpm enrich -- --dry-run` | what the LLM passes would cost |
@@ -29,3 +30,11 @@ from a 298-item catalog with no LLM in the loop.
 **Read [HANDOFF.md](./HANDOFF.md) before changing anything.** It documents the
 version-specific `pg_search` syntax, why BM25's `k1`/`b` cannot be tuned, why negation
 does not work, and two architectural invariants that are easy to break by accident.
+
+## Optional accounts
+
+Guests can search, answer the questionnaire, and train their profile without
+signing in. Google sign-in and email codes save that profile across devices.
+See [authentication setup](docs/authentication.md) for Google and Twilio setup,
+deployment steps, legacy-profile compatibility, and tests. No passwords, SMS,
+saved products, or search history are collected by this feature.

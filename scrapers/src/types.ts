@@ -52,8 +52,14 @@ export function parseHeightCm(text: string | null | undefined): number | null {
  * Returns null for anything that is not a recognisable size, so numeric SKUs and
  * colour codes cannot leak into `size_range`.
  */
-export function normalizeSize(raw: string): string | null {
-  const s = raw.trim().toUpperCase().replace(/\s+/g, '')
+export function normalizeSize(raw: unknown): string | null {
+  // Not `string`, because these payloads are external and change shape without
+  // notice. Uniqlo's size `display` field turned from a label into an object
+  // ({showFlag, chipType}) and the whole brand died on `raw.trim is not a
+  // function` — a crash, mid-crawl, from one upstream field. Numbers are coerced
+  // because a numeric size is a real size; everything else is simply not one.
+  if (typeof raw !== 'string' && typeof raw !== 'number') return null
+  const s = String(raw).trim().toUpperCase().replace(/\s+/g, '')
   if (!s) return null
   if (/^(XXXS|XXS|XS|S|M|L|XL|XXL|XXXL|2XL|3XL|4XL)$/.test(s)) return s
   // Numeric sizes (waist, dress size) and ranges like "28X32".
@@ -67,10 +73,10 @@ export function normalizeSize(raw: string): string | null {
   return null
 }
 
-export function normalizeSizes(raw: (string | null | undefined)[]): string[] {
+export function normalizeSizes(raw: readonly unknown[]): string[] {
   const out: string[] = []
   for (const r of raw) {
-    const n = r ? normalizeSize(r) : null
+    const n = normalizeSize(r)
     if (n && !out.includes(n)) out.push(n)
   }
   return out

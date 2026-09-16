@@ -1,5 +1,5 @@
 import type {
-  OnboardingInput, OnboardingOptions, PairItem, Profile, SearchResponse,
+  AuthSession, OnboardingInput, OnboardingOptions, PairItem, Profile, SearchResponse,
 } from './types.js'
 
 /**
@@ -9,11 +9,37 @@ import type {
  * URL to configure and no CORS to handle.
  */
 
-const USER_KEY = 'ink.userId'
+let currentUserId: string | null = null
+let sessionVersion = 0
 
-export const getUserId = (): string | null => localStorage.getItem(USER_KEY)
-export const setUserId = (id: string): void => localStorage.setItem(USER_KEY, id)
-export const clearUserId = (): void => localStorage.removeItem(USER_KEY)
+export const getUserId = (): string | null => currentUserId
+export const setUserId = (id: string): void => { sessionVersion++; currentUserId = id }
+export const clearUserId = (): void => { sessionVersion++; currentUserId = null }
+
+export async function fetchSession(): Promise<AuthSession> {
+  const version = ++sessionVersion
+  const session = await json<AuthSession>(await fetch('/api/auth/session', { cache: 'no-store' }))
+  if (version !== sessionVersion) throw new DOMException('Session changed', 'AbortError')
+  currentUserId = session.user?.id ?? null
+  return session
+}
+
+async function authMutation(path: string, body: object = {}, method = 'POST'): Promise<void> {
+  sessionVersion++
+  await json(await fetch(`/api/auth/${path}`, {
+    method, headers: { 'content-type': 'application/json' }, body: JSON.stringify(body),
+  }))
+  sessionVersion++
+}
+
+export async function logout(): Promise<void> {
+  await authMutation('logout')
+  clearUserId()
+}
+
+export const requestEmailCode = (email: string, link: boolean): Promise<void> => authMutation('email/request', { email, link })
+export const verifyEmailCode = (code: string): Promise<void> => authMutation('email/verify', { code })
+export const updateName = (name: string): Promise<void> => authMutation('name', { name }, 'PUT')
 
 async function json<T>(res: Response): Promise<T> {
   if (!res.ok) {
@@ -40,7 +66,6 @@ export async function search(
     body: JSON.stringify({
       query,
       brands: opts.brands ?? [],
-      userId: getUserId() ?? undefined,
     }),
     signal: opts.signal,
   })

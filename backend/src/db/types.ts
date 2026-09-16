@@ -142,6 +142,22 @@ export interface ExpansionCacheTable {
   created_at: Generated<Date>
 }
 
+export interface BrandsTable {
+  /** Matches products.brand (lowercased). */
+  slug: string
+  display_name: string
+  site_url: string | null
+  /**
+   * Postgres interval, e.g. '7 days'. Arrives as its text form because
+   * db/index.ts pins the interval type parser to identity.
+   */
+  refresh_frequency: string
+  /** The crawl's timestamp, written by ingest — never the ingest clock. */
+  last_scraped_at: Date | null
+  enabled: Generated<boolean>
+  notes: string | null
+}
+
 export interface IngestRunsTable {
   id: Generated<number>
   run_dir: string
@@ -196,6 +212,22 @@ export interface AbComparisonsTable {
 }
 
 export interface Database {
+  accounts: { user_id: string; email: string; google_subject: string | null }
+  sessions: { token_hash: string; user_id: string; expires_at: Date }
+  auth_challenges: {
+    token_hash: string
+    kind: 'google' | 'email' | 'link'
+    session_hash: string | null
+    email: string | null
+    google_subject: string | null
+    verifier: string | null
+    nonce: string | null
+    provider_sid: string | null
+    attempts: Generated<number>
+    expires_at: Date
+  }
+  auth_limits: { key: string; hits: number; expires_at: Date }
+  brands: BrandsTable
   products: ProductsTable
   expansion_cache: ExpansionCacheTable
   ingest_runs: IngestRunsTable

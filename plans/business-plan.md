@@ -1,0 +1,3 @@
+- magazines will use this site and pay base on click
+- choose an output so that the transaction happens on your site but connects to the brands checkout
+    - for example, inksearch will put together an outfit for you based on your preferences and you can choose to buy the entire outfit via inksearch but it connects to the respective brands

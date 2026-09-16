@@ -6,3 +6,4 @@ dist
 # This is ~348 MB per scrape run and regenerable via `pnpm refresh`.
 output/
 .gstack/
+.vercel

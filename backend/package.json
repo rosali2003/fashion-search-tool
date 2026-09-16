@@ -7,6 +7,7 @@
     "build": "tsc -p tsconfig.build.json",
     "start": "node dist/index.js",
     "migrate": "tsx src/db/migrate.ts",
+    "brands": "tsx src/brands/cli.ts",
     "ingest": "tsx src/ingest/run.ts",
     "eval": "tsx evals/src/run.ts",
     "test": "node --import tsx --test \"src/**/*.test.ts\"",
@@ -20,6 +21,7 @@
     "hono": "^4.7.4",
     "kysely": "^0.27.4",
     "openai": "^7.4.0",
+    "openid-client": "^6.8.8",
     "pg": "^8.13.3"
   },
   "devDependencies": {

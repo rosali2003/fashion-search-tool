@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import { currentSession } from '../auth/repository.js'
 import { bm25Search, countMatchingFilters, type Candidate } from '../search/repository.js'
 import { capBrandShare } from '../search/diversity.js'
 import { imageUrlFor } from './imageUrl.js'
@@ -84,7 +85,8 @@ search.post('/', async (c) => {
   }
 
   const query = (typeof body.query === 'string' ? body.query : '').trim().slice(0, MAX_QUERY_CHARS)
-  const userId = typeof body.userId === 'string' ? body.userId : null
+  c.header('Cache-Control', 'no-store')
+  const userId = (await currentSession(c))?.user_id ?? null
   const brands = Array.isArray(body.brands)
     ? body.brands.filter((b): b is string => typeof b === 'string')
     : []

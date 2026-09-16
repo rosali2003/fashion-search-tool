@@ -31,6 +31,10 @@ pg.types.setTypeParser(pg.types.builtins.NUMERIC, (v) => (v === null ? null : Nu
 // int8 (bigserial ids) also arrives as a string; these are row counts and ids
 // far below 2^53, so narrowing to number is safe and keeps the types simple.
 pg.types.setTypeParser(pg.types.builtins.INT8, (v) => (v === null ? null : Number(v)))
+// interval (brands.refresh_frequency) would otherwise be parsed into a
+// postgres-interval object. Its text form ('7 days', '1 mon') is what the CLI
+// prints and what `set` accepts, so it is kept as the string Postgres sends.
+pg.types.setTypeParser(pg.types.builtins.INTERVAL, (v) => v)
 
 /**
  * TLS is opt-in rather than inferred.

@@ -2,8 +2,8 @@
  * Per-IP rate limiting for the routes that cost money.
  *
  * `POST /api/search` makes up to two paid LLM calls per request — expansion and
- * rerank — and there is no auth anywhere in this app by design (see
- * db/migrations/003_users.ts). A public URL therefore exposes a way to spend the
+ * rerank — and remains available to guests despite optional account sign-in.
+ * A public URL therefore exposes a way to spend the
  * operator's API budget at the speed of curl. This is the cheap structural
  * mitigation; the account-level spend cap is the one that actually bounds the
  * loss, and both should exist.

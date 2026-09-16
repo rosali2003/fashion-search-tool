@@ -9,6 +9,8 @@ export interface UpsertStats {
   skippedUnchanged: number
   deactivated: number
   deactivationSkipped: boolean
+  /** When the crawl ran, from the scraped records. What recordRun stamps on the brand. */
+  crawledAt: Date
 }
 
 /**
@@ -23,7 +25,9 @@ export interface UpsertStats {
 const DEACTIVATION_FLOOR = 0.5
 
 /**
- * Consecutive days a product must go unseen before it is deactivated.
+ * Consecutive days a product must go unseen before it is deactivated — the floor
+ * of the window. The window actually applied is the larger of this and two of
+ * the brand's `refresh_frequency` intervals, see upsertBrand.
  *
  * Absence from one crawl is not evidence a product is gone. The scrapers cap at
  * MAX_PRODUCTS (50 for Aritzia and Gap) across a handful of listing pages, so
@@ -36,6 +40,13 @@ const DEACTIVATION_FLOOR = 0.5
  * A staleness window is robust to that: a product genuinely delisted stops
  * appearing in every run and ages out; one that merely fell out of today's
  * sample is seen again tomorrow and its last_seen_at refreshes.
+ *
+ * "Seen again tomorrow" assumed a daily crawl. Now that brands are crawled on
+ * their own cadence, a fixed 7-day window would deactivate every product outside
+ * the sample of a fortnightly brand's run, since by then everything is older
+ * than the window — the sample-not-census protection would be gone. Scaling the
+ * window to two crawl intervals keeps the original meaning: a product has to be
+ * missing from consecutive runs, not just from one.
  */
 const STALE_AFTER_DAYS = Number(process.env.INK_STALE_AFTER_DAYS ?? 7)
 
@@ -51,6 +62,15 @@ const STALE_AFTER_DAYS = Number(process.env.INK_STALE_AFTER_DAYS ?? 7)
  * an owner.
  */
 const ENRICHMENT_OWNED = new Set([
+  // Written at ingest as [] (there is no vision pass yet to disagree with) and
+  // again by enrich with the real disagreements. Without it here, every ingest
+  // erased the enrichment-time log while leaving the v_* columns intact, so the
+  // rate enrich prints only ever covered products enriched since the last
+  // ingest. Production read "0 conflicts / 295 vision-done" — not zero
+  // disagreements, just no surviving evidence of them — which makes the
+  // day-over-day comparison enrich.ts calls "the cheapest available signal that
+  // an extractor regressed" unable to signal anything.
+  'attribute_conflicts',
   'attributes_source',
   'attributes_model',
   'attributes_at',
@@ -70,6 +90,20 @@ const ENRICHMENT_OWNED = new Set([
  * outright — the mechanism that makes a daily refresh nearly free.
  */
 export async function upsertBrand(brand: string, rows: ProductRow[]): Promise<UpsertStats> {
+  // products.brand is a foreign key to brands.slug. Checked up front so a new
+  // scraper that was never registered fails with a sentence, not a constraint
+  // name — and because the brand's cadence sizes the staleness window below.
+  const registered = await db
+    .selectFrom('brands')
+    .select('refresh_frequency')
+    .where('slug', '=', brand)
+    .executeTakeFirst()
+  if (!registered) {
+    throw new Error(
+      `${brand}: not in the brands table. Register it (slug, display_name, refresh_frequency) in a migration before ingesting.`,
+    )
+  }
+
   // When the crawl actually ran, taken from the scraped records themselves.
   const crawledAt =
     rows.reduce<Date | null>((max, r) => {
@@ -84,6 +118,7 @@ export async function upsertBrand(brand: string, rows: ProductRow[]): Promise<Up
     skippedUnchanged: 0,
     deactivated: 0,
     deactivationSkipped: false,
+    crawledAt,
   }
 
   const existing = await db
@@ -156,14 +191,18 @@ export async function upsertBrand(brand: string, rows: ProductRow[]): Promise<Up
     // unseen for STALE_AFTER_DAYS. `last_seen_at` is refreshed for everything in
     // this run above, so this only catches products that have been missing from
     // every run across the window.
-    const cutoff = new Date(Date.now() - STALE_AFTER_DAYS * 86_400_000)
     const res = await db
       .updateTable('products')
       .set({ is_active: false })
       .where('brand', '=', brand)
       .where('is_active', '=', true)
       .where('product_url', 'not in', seenUrls)
-      .where('last_seen_at', '<', cutoff)
+      .where(
+        sql<boolean>`last_seen_at < now() - greatest(
+          make_interval(days => ${STALE_AFTER_DAYS}),
+          2 * ${registered.refresh_frequency}::interval
+        )`,
+      )
       .executeTakeFirst()
     stats.deactivated = Number(res.numUpdatedRows ?? 0)
   }
@@ -192,6 +231,15 @@ export async function recordRun(
       cost_usd: extra.costUsd ?? 0,
       duration_ms: extra.durationMs ?? null,
     })
+    .execute()
+
+  // The cadence clock. greatest() so re-ingesting an older run directory never
+  // moves it backwards, and the crawl's timestamp so it never moves forward
+  // without a real crawl.
+  await db
+    .updateTable('brands')
+    .set({ last_scraped_at: sql`greatest(last_scraped_at, ${s.crawledAt}::timestamptz)` })
+    .where('slug', '=', brand)
     .execute()
 }
 

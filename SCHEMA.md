@@ -19,6 +19,7 @@ Regenerate any section below with `docker exec ink-postgres psql -U postgres -d 
 - [Extensions](#extensions)
 - [`products`](#products) — the catalog
 - [`users`](#users) / [`user_preferences`](#user_preferences) / [`ab_comparisons`](#ab_comparisons) — the shopper
+- [`brands`](#brands) — the registry and the scrape schedule
 - [`ingest_runs`](#ingest_runs) / [`expansion_cache`](#expansion_cache) — operational
 - [The BM25 index](#the-bm25-index)
 - [Migrations](#migrations)
@@ -29,6 +30,7 @@ Regenerate any section below with `docker exec ink-postgres psql -U postgres -d 
 
 ```mermaid
 erDiagram
+    brands ||--o{ products : "slug = brand"
     users ||--o| user_preferences : "1:1, cascade"
     users ||--o{ ab_comparisons : "logs"
     products ||--o{ ab_comparisons : "winner"
@@ -52,9 +54,16 @@ erDiagram
         bigint loser_product_id FK
         text source "ab | find_similar"
     }
+    brands {
+        text slug PK
+        interval refresh_frequency "scrape cadence"
+        timestamptz last_scraped_at "crawl clock"
+        boolean enabled
+    }
     products {
         bigint id PK
         text product_url UK "natural key"
+        text brand FK
         text content_hash "skip-unchanged"
         text search_title "BM25 tier 1"
         text search_attrs "BM25 tier 2"
@@ -345,6 +354,54 @@ product plan treats as an implicit positive carrying the same ELO step.
 
 ---
 
+## `brands`
+
+The brand registry, and the scrape schedule. `products.brand` is a foreign key to
+`slug` since migration 010, so a new scraper has to be registered here before its
+output can be ingested — `upsertBrand` checks and says so in plain words.
+
+| Column | Type | Null | Default | Notes |
+|---|---|---|---|---|
+| `slug` | `text` | no | — | PK; matches `products.brand` (lowercased) |
+| `display_name` | `text` | no | — | |
+| `site_url` | `text` | yes | — | |
+| `refresh_frequency` | `interval` | no | — | how often to scrape; `> 0` enforced |
+| `last_scraped_at` | `timestamptz` | yes | — | the **crawl's** timestamp, written by ingest |
+| `enabled` | `boolean` | no | `true` | off = the cron never scrapes it |
+| `notes` | `text` | yes | — | |
+
+**`refresh_frequency` is per brand because fashion does not refresh on one calendar.**
+Legacy wholesale runs two six-month seasons with pre-collections in the gaps; fast
+fashion pushes weekly or faster; DTC labels do continuous micro-drops. A single nightly
+crawl of everything was both too much (Aritzia sticky-blocks) and too little (never
+faster than daily). `pnpm refresh` still fires daily, but asks
+`pnpm brands due` which brands to hand to the scrapers:
+
+```sql
+enabled and (last_scraped_at is null or last_scraped_at + refresh_frequency <= now() + interval '12 hours')
+```
+
+The 12-hour slack stops a cadence drifting a day later every cycle when the cron
+minute lands just before the exact anniversary of the last crawl.
+
+`last_scraped_at` is stamped by `recordRun` with `greatest(last_scraped_at, crawled_at)`,
+where `crawled_at` is the newest `scraped_at` in the ingested records — never the ingest
+clock, for the same reason as `products.last_seen_at`: re-ingesting an old run must not
+make a brand look freshly crawled.
+
+**The cadence also sizes the soft-delete window.** `INK_STALE_AFTER_DAYS` assumed a
+daily crawl ("seen again tomorrow"). A product of a fortnightly brand is *always* older
+than 7 days by the next run, so a fixed window would deactivate everything outside that
+run's sample. The window is now `greatest(INK_STALE_AFTER_DAYS, 2 × refresh_frequency)`:
+a product must be missing from consecutive runs, not just from one.
+
+Tune with `pnpm brands list` / `pnpm brands set <slug> '<interval>'` /
+`pnpm brands enable|disable <slug>`. The seeded values are starting points, not
+measurements — check `ingest_runs.inserted` per brand over time to see the real drop
+rhythm and adjust.
+
+---
+
 ## `ingest_runs`
 
 One row per brand per ingest run. The operational log behind `pnpm ingest -- --report`.
@@ -446,8 +503,10 @@ Kysely `FileMigrationProvider`, tracked in `kysely_migration`. Run with `pnpm mi
 | 006 | `extraction_model` | `attributes_model`, `vision_model` + index |
 | 007 | `image_set_hash` | `image_set_hash`, `vision_image_set_hash` — the vision cache |
 | 008 | `style_cluster` | `user_preferences.style_cluster` (questionnaire Q5) |
+| 009 | `auth` | `accounts`, `sessions`, `auth_challenges`, `auth_limits` |
+| 010 | `brands` | the `brands` table, seeded from the scrapers; `products.brand` FK |
 
-Down migrations exist for all eight. `001.down` deliberately does not drop `pg_search` —
+Down migrations exist for all ten. `001.down` deliberately does not drop `pg_search` —
 the BM25 index depends on it and the drop would fail anyway.
 
 ---

@@ -33,7 +33,7 @@ both ingest and query time, plus LLM query expansion.
 cp .env.example .env          # set OPENAI_API_KEY or ANTHROPIC_API_KEY
 docker compose up -d          # ParadeDB on 5433 (local Postgres keeps 5432)
 pnpm install
-pnpm migrate                  # 7 migrations
+pnpm migrate                  # 10 migrations
 pnpm ingest -- --report       # ingests the newest run under output/
 pnpm dev:backend              # :3000
 pnpm dev:frontend             # :5173
@@ -44,7 +44,8 @@ a designed state, not a broken one, and the UI says so honestly.
 
 | Command | What it does |
 |---|---|
-| `pnpm refresh` | scrape → ingest → enrich. The daily cron entry point |
+| `pnpm refresh` | scrape brands that are due → ingest → enrich. The daily cron entry point |
+| `pnpm brands list` | each brand's scrape cadence, last crawl and next due. `set <slug> '<interval>'` changes it |
 | `pnpm ingest -- --report` | deterministic ingest, prints facet coverage |
 | `pnpm enrich -- --dry-run` | shows what the LLM passes would cost, spends nothing |
 | `pnpm eval` | retrieval metrics against the golden set. $0, ~3s |
@@ -98,7 +99,7 @@ scrapers ──► output/<run>/*.json + content-addressed images
                   ▼
       Postgres: products · users · user_preferences · ab_comparisons
                   │
-POST /api/search { query, userId }
+POST /api/search { query } + optional session cookie
   1. expand      nano  → garment synonyms          [cached · fails open]
   2. retrieve    BM25, 120 candidates, filters inside @@@
   3. diversify   cap any brand at 40% of the window
@@ -110,6 +111,16 @@ POST /api/search { query, userId }
 ---
 
 ## Things that will bite you
+
+### Profiles now use optional account and guest sessions
+
+Google and Twilio Verify email-code sign-in are optional; guests can still save
+preferences. Profile access and personalized search resolve ownership from an
+HttpOnly session cookie, never a supplied UUID. Migration `009_auth` must run
+before the updated app, and legacy localStorage-only guests must recreate their
+profiles. Account creation preserves a current guest profile; returning sign-in
+restores the account's existing preferences. Setup, rollout, and integration tests
+are documented in [docs/authentication.md](docs/authentication.md).
 
 ### `pg_search` syntax is version-specific
 
@@ -420,7 +431,8 @@ scrape would otherwise wipe most of the catalog while you sleep. Tested by feedi
 
 ```
 backend/src/
-  db/            migrations 001–005, Kysely types
+  db/            migrations 001–010, Kysely types
+  brands/        the registry CLI: list, due, set, enable, disable
   normalize/     the deterministic core, ~1,400 lines, heavily tested
     patterns.ts    regex builders — READ THE COMMENT before writing a pattern
     material.ts    four brand dialects, one shape-dispatched parser
