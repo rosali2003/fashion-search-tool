@@ -1,10 +1,20 @@
 /**
- * Daily refresh: scrape -> ingest -> enrich.
+ * Daily refresh: scrape the brands that are due -> ingest -> enrich.
  *
  *   pnpm refresh                 full pipeline
+ *   pnpm refresh -- --force      scrape every enabled brand, due or not
  *   pnpm refresh -- --no-scrape  reuse the newest run directory
  *   pnpm refresh -- --no-enrich  skip the paid passes
  *   pnpm refresh -- --dry-run    report what each stage would do
+ *
+ * The cron still fires daily, but which brands get crawled is decided by the
+ * `brands` table: each has a `refresh_frequency`, and only brands whose last
+ * crawl is older than that are scraped (`pnpm brands list` shows the schedule,
+ * `pnpm brands set <slug> '<interval>'` changes it). Fashion does not refresh on
+ * one calendar — fast fashion drops weekly, DTC labels continuously, legacy
+ * retailers twice a year — so a single nightly crawl of everything both wasted
+ * requests against sites that block scrapers and still could not be made fast
+ * enough for the brands that actually change daily.
  *
  * Designed to run unattended from cron, which shapes three things:
  *
@@ -24,7 +34,7 @@
  *   StartCalendarInterval { Hour 3, Minute <pick something arbitrary> }
  *   ProgramArguments: /bin/zsh -lc "cd <repo> && pnpm refresh >> output/refresh.out 2>&1"
  */
-import { spawn } from 'node:child_process'
+import { execFileSync, spawn } from 'node:child_process'
 import { appendFileSync, mkdirSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -107,10 +117,41 @@ async function main(): Promise<void> {
 
   console.log(`ink refresh · ${date}${dryRun ? ' [dry run]' : ''}\n`)
 
+  // --- which brands -----------------------------------------------------
+  // Asked before the scrape rather than inside the scrapers, which have no
+  // database access. `brands due` prints slugs only, so its stdout is the
+  // argument list. If it cannot answer (database down), scraping is skipped
+  // rather than guessed at: ingest will fail on the same outage and surface it.
+  let due: string[] | null = null
+  if (!has('--no-scrape')) {
+    if (has('--force')) {
+      console.log('— brands: --force, scraping all —')
+    } else {
+      try {
+        due = execFileSync('pnpm', ['-s', 'brands', 'due'], { cwd: REPO_ROOT, encoding: 'utf8' })
+          .split('\n')
+          .map((s) => s.trim())
+          .filter(Boolean)
+        console.log(`— brands due: ${due.length ? due.join(', ') : 'none'} —`)
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err)
+        stages.push({ stage: 'due', ok: false, ms: 0, code: null, tail: msg.slice(0, 900) })
+        console.error(`could not determine due brands: ${msg}`)
+      }
+    }
+  }
+
   // --- scrape -----------------------------------------------------------
-  if (!has('--no-scrape') && !dryRun) {
-    console.log('— scraping —')
-    stages.push(await run('scrape', 'pnpm', ['scrape:all']))
+  // Nothing due is a normal outcome, not a skipped stage: most days most brands
+  // are inside their window. Ingest still runs below so a run directory whose
+  // ingest failed last time is picked up without waiting for the next crawl.
+  const scrapeWanted = !has('--no-scrape') && !dryRun && !stages.some((s) => s.stage === 'due')
+  if (scrapeWanted && (due === null || due.length > 0)) {
+    console.log('\n— scraping —')
+    // pnpm forwards a bare `--` to the script, and run.ts would reject it as an
+    // unknown brand, so only add the separator when there are brands to pass.
+    const scrapeArgs = due && due.length > 0 ? ['scrape:all', '--', ...due] : ['scrape:all']
+    stages.push(await run('scrape', 'pnpm', scrapeArgs))
   }
 
   // --- ingest -----------------------------------------------------------
@@ -146,6 +187,7 @@ async function main(): Promise<void> {
     ok: stages.every((s) => s.ok),
     duration_ms: Date.now() - started,
     stages: Object.fromEntries(stages.map((s) => [s.stage, { ok: s.ok, ms: s.ms }])),
+    ...(due !== null ? { due } : {}),
     ...(ingest ? parseIngest(ingest.tail) : {}),
     ...(enrich ? parseEnrich(enrich.tail) : {}),
     failures: stages.filter((s) => !s.ok).map((s) => ({ stage: s.stage, tail: s.tail })),

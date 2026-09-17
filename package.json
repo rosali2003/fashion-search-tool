@@ -20,8 +20,10 @@
     "scrape:sezane": "pnpm --filter scrapers scrape:sezane",
     "scrape:all": "pnpm --filter scrapers scrape:all",
     "refresh": "tsx scripts/refresh.ts",
+    "sync:images": "tsx --env-file-if-exists=.env scripts/sync-images-to-r2.ts",
     "test": "pnpm --filter backend test && pnpm --filter scrapers test",
     "eval": "pnpm --filter backend eval",
+    "brands": "pnpm --filter backend brands",
     "ingest": "pnpm --filter backend ingest",
     "enrich": "pnpm --filter backend enrich",
     "migrate": "pnpm --filter backend migrate"
@@ -39,6 +41,7 @@
     ]
   },
   "devDependencies": {
+    "@aws-sdk/client-s3": "^3.1121.0",
     "tsx": "^4.23.11"
   }
 }

@@ -5,6 +5,8 @@ import { sql } from 'kysely'
 
 import { db } from './db/index.js'
 import { rateLimit } from './rateLimit.js'
+import auth from './routes/auth.js'
+import { appOrigin, protectMutations } from './auth/security.js'
 
 import search from './routes/search.js'
 import images from './routes/images.js'
@@ -12,6 +14,7 @@ import users from './routes/users.js'
 import { describeLlm } from './llm/client.js'
 
 const app = new Hono().basePath('/api')
+app.use('*', protectMutations)
 
 // One structured line per request. This is the observability the daily refresh
 // and the eval harness both read from, so it stays machine-parseable.
@@ -68,8 +71,10 @@ app.use('/search/*', rateLimit)
 app.route('/search', search)
 app.route('/images', images)
 app.route('/users', users)
+app.route('/auth', auth)
 
 const port = Number(process.env.PORT ?? 3000)
+appOrigin()
 serve({ fetch: app.fetch, port })
 console.log(`Backend running on http://localhost:${port}`)
 // Which model is live should never be a mystery when reading logs.

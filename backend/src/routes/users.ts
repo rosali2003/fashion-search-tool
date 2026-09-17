@@ -1,5 +1,7 @@
 import { Hono } from 'hono'
 import { db } from '../db/index.js'
+import { currentSession, issueSession, requireOwner } from '../auth/repository.js'
+import { readObject } from '../auth/security.js'
 import {
   createUser, updatePreferences, loadPreferences, knownBrands,
   recordComparison, pickPair,
@@ -12,6 +14,10 @@ import {
 } from '../preferences/options.js'
 
 const users = new Hono()
+users.use('*', async (context, next) => {
+  context.header('Cache-Control', 'no-store')
+  await next()
+})
 
 const oneOf = (allowed: readonly string[], v: unknown): string | null =>
   typeof v === 'string' && allowed.includes(v) ? v : null
@@ -73,15 +79,21 @@ function parseOnboarding(body: Record<string, unknown>) {
 }
 
 users.post('/', async (c) => {
-  let body: Record<string, unknown>
-  try {
-    body = (await c.req.json()) as Record<string, unknown>
-  } catch {
+  const body = await readObject(c)
+  if (!body) {
     return c.json({ error: 'Body must be JSON' }, 400)
   }
+  const session = await currentSession(c)
+  if (session) {
+    await updatePreferences(session.user_id, parseOnboarding(body))
+    return c.json({ userId: session.user_id })
+  }
   const { userId } = await createUser(parseOnboarding(body))
+  await issueSession(c, userId)
   return c.json({ userId }, 201)
 })
+
+users.use('/:id/*', requireOwner)
 
 users.get('/:id', async (c) => {
   const id = c.req.param('id')
